@@ -1,0 +1,17 @@
+{
+  "technique": "Histogram matching (to GBIF)",
+  "deepweeds": {
+    "ML (RandomForest)": {
+      "acc": 0.2992,
+      "macro_f1": 0.2856
+    },
+    "DL (ResNet-50)": {
+      "acc": 0.6542,
+      "macro_f1": 0.661
+    },
+    "VLM (CLIP-LoRA)": {
+      "acc": 0.685,
+      "macro_f1": 0.6879
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "baseline": {
+    "ML (RandomForest)": {
+      "acc": 0.2767,
+      "macro_f1": 0.2737
+    },
+    "DL (ResNet-50)": {
+      "acc": 0.6658,
+      "macro_f1": 0.6739
+    },
+    "VLM (CLIP-LoRA)": {
+      "acc": 0.6717,
+      "macro_f1": 0.6684
+    }
+  },
+  "techniques": {
+    "Baseline (no preprocessing)": {
+      "ML (RandomForest)": {
+        "acc": 0.2767,
+        "macro_f1": 0.2737
+      },
+      "DL (ResNet-50)": {
+        "acc": 0.6658,
+        "macro_f1": 0.6739
+      },
+      "VLM (CLIP-LoRA)": {
+        "acc": 0.6717,
+        "macro_f1": 0.6684
+      }
+    },
+    "CLAHE contrast normalisation": {
+      "ML (RandomForest)": {
+        "acc": 0.3083,
+        "macro_f1": 0.3131
+      },
+      "DL (ResNet-50)": {
+        "acc": 0.6833,
+        "macro_f1": 0.6869
+      },
+      "VLM (CLIP-LoRA)": {
+        "acc": 0.6725,
+        "macro_f1": 0.6677
+      }
+    },
+    "Fourier Domain Adaptation (beta=0.01)": {
+      "ML (RandomForest)": {
+        "acc": 0.27,
+        "macro_f1": 0.2563
+      },
+      "DL (ResNet-50)": {
+        "acc": 0.6533,
+        "macro_f1": 0.6652
+      },
+      "VLM (CLIP-LoRA)": {
+        "acc": 0.685,
+        "macro_f1": 0.6869
+      }
+    },
+    "Histogram matching (to GBIF)": {
+      "ML (RandomForest)": {
+        "acc": 0.2992,
+        "macro_f1": 0.2856
+      },
+      "DL (ResNet-50)": {
+        "acc": 0.6542,
+        "macro_f1": 0.661
+      },
+      "VLM (CLIP-LoRA)": {
+        "acc": 0.685,
+        "macro_f1": 0.6879
+      }
+    },
+    "Reinhard colour transfer": {
+      "ML (RandomForest)": {
+        "acc": 0.2683,
+        "macro_f1": 0.1484
+      },
+      "DL (ResNet-50)": {
+        "acc": 0.46,
+        "macro_f1": 0.3942
+      },
+      "VLM (CLIP-LoRA)": {
+        "acc": 0.3717,
+        "macro_f1": 0.3161
+      }
+    }
+  }
+}

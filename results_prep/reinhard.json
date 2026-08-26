@@ -1,0 +1,17 @@
+{
+  "technique": "Reinhard colour transfer",
+  "deepweeds": {
+    "ML (RandomForest)": {
+      "acc": 0.2683,
+      "macro_f1": 0.1484
+    },
+    "DL (ResNet-50)": {
+      "acc": 0.46,
+      "macro_f1": 0.3942
+    },
+    "VLM (CLIP-LoRA)": {
+      "acc": 0.3717,
+      "macro_f1": 0.3161
+    }
+  }
+}

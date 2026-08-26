@@ -1,0 +1,17 @@
+{
+  "technique": "CLAHE contrast normalisation",
+  "deepweeds": {
+    "ML (RandomForest)": {
+      "acc": 0.3083,
+      "macro_f1": 0.3131
+    },
+    "DL (ResNet-50)": {
+      "acc": 0.6833,
+      "macro_f1": 0.6869
+    },
+    "VLM (CLIP-LoRA)": {
+      "acc": 0.6725,
+      "macro_f1": 0.6677
+    }
+  }
+}

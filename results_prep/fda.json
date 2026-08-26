@@ -1,0 +1,17 @@
+{
+  "technique": "Fourier Domain Adaptation (beta=0.01)",
+  "deepweeds": {
+    "ML (RandomForest)": {
+      "acc": 0.27,
+      "macro_f1": 0.2563
+    },
+    "DL (ResNet-50)": {
+      "acc": 0.6533,
+      "macro_f1": 0.6652
+    },
+    "VLM (CLIP-LoRA)": {
+      "acc": 0.685,
+      "macro_f1": 0.6869
+    }
+  }
+}
