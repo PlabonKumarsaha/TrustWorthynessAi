@@ -1,0 +1,19 @@
+{
+  "model": "ML (RandomForest, colour+texture)",
+  "in_domain_gbif": {
+    "acc": 0.6833,
+    "macro_f1": 0.6798
+  },
+  "ood_deepweeds": {
+    "acc": 0.2767,
+    "macro_f1": 0.2737
+  },
+  "gap_acc": 0.4066,
+  "seconds": 1.5,
+  "classes": [
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "rubber_vine"
+  ]
+}

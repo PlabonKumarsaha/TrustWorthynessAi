@@ -1,0 +1,39 @@
+# ---- Datasets (never push raw or processed imagery) ----
+weeds/
+*.npy
+tensorflow_datasets/
+
+# ---- Virtual environment ----
+.venv/
+venv/
+env/
+ENV/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+
+# ---- Model weights / checkpoints / caches ----
+*.pt
+*.pth
+*.onnx
+*.h5
+*.keras
+*.ckpt
+*.safetensors
+.cache/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ---- Scratch / temp ----
+scratchpad/
+*.log

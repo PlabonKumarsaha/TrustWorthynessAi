@@ -1,0 +1,40 @@
+{
+  "model": "VLM (CLIP ViT-B/32)",
+  "zeroshot": {
+    "in_domain_gbif": {
+      "acc": 0.8083,
+      "macro_f1": 0.8028
+    },
+    "ood_deepweeds": {
+      "acc": 0.2808,
+      "macro_f1": 0.2076
+    }
+  },
+  "lora": {
+    "in_domain_gbif": {
+      "acc": 0.9875,
+      "macro_f1": 0.9875
+    },
+    "ood_deepweeds": {
+      "acc": 0.5842,
+      "macro_f1": 0.5691
+    },
+    "gap_acc": 0.4033
+  },
+  "in_domain_gbif": {
+    "acc": 0.9875,
+    "macro_f1": 0.9875
+  },
+  "ood_deepweeds": {
+    "acc": 0.5842,
+    "macro_f1": 0.5691
+  },
+  "gap_acc": 0.4033,
+  "seconds": 160.5,
+  "classes": [
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "rubber_vine"
+  ]
+}

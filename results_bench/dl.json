@@ -1,0 +1,20 @@
+{
+  "model": "DL (ResNet-50 fine-tuned)",
+  "in_domain_gbif": {
+    "acc": 0.9458,
+    "macro_f1": 0.9455
+  },
+  "ood_deepweeds": {
+    "acc": 0.6525,
+    "macro_f1": 0.6529
+  },
+  "gap_acc": 0.2933,
+  "best_val_acc": 0.9375,
+  "seconds": 338.8,
+  "classes": [
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "rubber_vine"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "zeroshot_single": {
+    "source_test": {
+      "acc": 0.3541666666666667,
+      "macro_f1": 0.31118873090839966
+    },
+    "australian": {
+      "acc": 0.123125,
+      "macro_f1": 0.06913600163399608
+    }
+  },
+  "zeroshot_ensemble": {
+    "source_test": {
+      "acc": 0.3875,
+      "macro_f1": 0.3647981761749717
+    },
+    "australian": {
+      "acc": 0.116875,
+      "macro_f1": 0.07313523097192595
+    }
+  },
+  "lora_source_adapted": {
+    "source_test": {
+      "acc": 0.8854166666666666,
+      "macro_f1": 0.8858244368604897
+    },
+    "australian": {
+      "acc": 0.3525,
+      "macro_f1": 0.3470940995643851
+    },
+    "best_val_acc": 0.8583333333333333,
+    "best_epoch": 8,
+    "trainable_params": 1769472
+  },
+  "_meta": {
+    "device": "mps",
+    "model": "ViT-B-32/openai",
+    "seconds": 397.3,
+    "n_source_test": 480,
+    "n_australian": 1600
+  }
+}

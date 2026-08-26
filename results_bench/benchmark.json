@@ -1,0 +1,43 @@
+{
+  "chance": 0.25,
+  "classes": [
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "rubber_vine"
+  ],
+  "rows": [
+    {
+      "model": "DL (ResNet-50 fine-tuned)",
+      "gbif_acc": 0.9458,
+      "gbif_f1": 0.9455,
+      "deepweeds_acc": 0.6525,
+      "deepweeds_f1": 0.6529,
+      "gap": 0.2933
+    },
+    {
+      "model": "VLM (CLIP ViT-B/32, LoRA)",
+      "gbif_acc": 0.9875,
+      "gbif_f1": 0.9875,
+      "deepweeds_acc": 0.5842,
+      "deepweeds_f1": 0.5691,
+      "gap": 0.4033
+    },
+    {
+      "model": "VLM (CLIP ViT-B/32, zero-shot)",
+      "gbif_acc": 0.8083,
+      "gbif_f1": 0.8028,
+      "deepweeds_acc": 0.2808,
+      "deepweeds_f1": 0.2076,
+      "gap": 0.5275
+    },
+    {
+      "model": "ML (RandomForest, colour+texture)",
+      "gbif_acc": 0.6833,
+      "gbif_f1": 0.6798,
+      "deepweeds_acc": 0.2767,
+      "deepweeds_f1": 0.2737,
+      "gap": 0.4066
+    }
+  ]
+}

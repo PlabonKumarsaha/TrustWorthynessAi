@@ -1,0 +1,52 @@
+{
+  "ViT-B-32_openai": {
+    "base": {
+      "acc": 0.1169,
+      "macro_f1": 0.0731
+    },
+    "base+DA": {
+      "acc": 0.1494,
+      "macro_f1": 0.1465
+    },
+    "TTA": {
+      "acc": 0.115,
+      "macro_f1": 0.0657
+    },
+    "TTA+DA": {
+      "acc": 0.1544,
+      "macro_f1": 0.1507
+    },
+    "TENT": {
+      "acc": 0.125,
+      "macro_f1": 0.0328
+    },
+    "TENT+DA": {
+      "acc": 0.1106,
+      "macro_f1": 0.108
+    }
+  },
+  "ViT-L-14_laion2b": {
+    "base": {
+      "acc": 0.1481,
+      "macro_f1": 0.133
+    },
+    "base+DA": {
+      "acc": 0.2619,
+      "macro_f1": 0.2591
+    },
+    "TTA": {
+      "acc": 0.1519,
+      "macro_f1": 0.1358
+    },
+    "TTA+DA": {
+      "acc": 0.275,
+      "macro_f1": 0.2705
+    }
+  },
+  "_meta": {
+    "seconds": 1922.1,
+    "best_method": "ViT-L-14_laion2b/TTA+DA",
+    "best_acc": 0.275,
+    "zero_shot_baseline": 0.1169
+  }
+}
