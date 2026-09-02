@@ -1,0 +1,13 @@
+{
+  "technique": "CLIP-guided self-training (label-free)",
+  "deepweeds": {
+    "Self-trained ResNet": {
+      "acc": 0.8283,
+      "macro_f1": 0.8228
+    },
+    "Self-trained ResNet + CLIP": {
+      "acc": 0.8408,
+      "macro_f1": 0.8378
+    }
+  }
+}

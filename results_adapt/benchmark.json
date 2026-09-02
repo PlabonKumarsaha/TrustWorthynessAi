@@ -1,0 +1,112 @@
+[
+  {
+    "method": "Ensemble (all 3) (k=10)",
+    "acc": 0.8917,
+    "setting": "few-shot"
+  },
+  {
+    "method": "Ensemble (all 3) (k=20)",
+    "acc": 0.8842,
+    "setting": "few-shot"
+  },
+  {
+    "method": "ResNet linear-probe (k=10)",
+    "acc": 0.8775,
+    "setting": "few-shot"
+  },
+  {
+    "method": "ResNet linear-probe (k=20)",
+    "acc": 0.8775,
+    "setting": "few-shot"
+  },
+  {
+    "method": "Self-trained ResNet + CLIP",
+    "acc": 0.8408,
+    "setting": "label-free"
+  },
+  {
+    "method": "CLIP linear-probe (k=20)",
+    "acc": 0.8308,
+    "setting": "few-shot"
+  },
+  {
+    "method": "Self-trained ResNet",
+    "acc": 0.8283,
+    "setting": "label-free"
+  },
+  {
+    "method": "Ensemble (all 3) (k=5)",
+    "acc": 0.8133,
+    "setting": "few-shot"
+  },
+  {
+    "method": "CLIP linear-probe (k=10)",
+    "acc": 0.8133,
+    "setting": "few-shot"
+  },
+  {
+    "method": "ResNet linear-probe (k=5)",
+    "acc": 0.8008,
+    "setting": "few-shot"
+  },
+  {
+    "method": "ResNet + CLIP",
+    "acc": 0.7333,
+    "setting": "label-free"
+  },
+  {
+    "method": "TENT-ResNet + CLIP ens",
+    "acc": 0.7333,
+    "setting": "label-free"
+  },
+  {
+    "method": "AdaBN-ResNet + CLIP ens",
+    "acc": 0.71,
+    "setting": "label-free"
+  },
+  {
+    "method": "AdaBN-ResNet + CLIP",
+    "acc": 0.71,
+    "setting": "label-free"
+  },
+  {
+    "method": "CLIP Tip-Adapter (k=20)",
+    "acc": 0.6875,
+    "setting": "few-shot"
+  },
+  {
+    "method": "CLIP Tip-Adapter (k=10)",
+    "acc": 0.6858,
+    "setting": "few-shot"
+  },
+  {
+    "method": "CLIP Tip-Adapter (k=5)",
+    "acc": 0.6783,
+    "setting": "few-shot"
+  },
+  {
+    "method": "TENT-ResNet",
+    "acc": 0.6783,
+    "setting": "label-free"
+  },
+  {
+    "method": "CLIP only",
+    "acc": 0.6717,
+    "setting": "label-free"
+  },
+  {
+    "method": "CLIP linear-probe (k=5)",
+    "acc": 0.6675,
+    "setting": "few-shot"
+  },
+  {
+    "method": "ResNet only",
+    "acc": 0.6658,
+    "setting": "label-free"
+  },
+  {
+    "method": "AdaBN-ResNet",
+    "acc": 0.635,
+    "setting": "label-free"
+  }
+]

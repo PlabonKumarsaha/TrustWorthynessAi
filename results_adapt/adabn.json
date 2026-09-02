@@ -1,0 +1,13 @@
+{
+  "technique": "AdaBN (label-free)",
+  "deepweeds": {
+    "AdaBN-ResNet": {
+      "acc": 0.635,
+      "macro_f1": 0.6311
+    },
+    "AdaBN-ResNet + CLIP ens": {
+      "acc": 0.71,
+      "macro_f1": 0.7063
+    }
+  }
+}

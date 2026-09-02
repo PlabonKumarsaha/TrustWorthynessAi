@@ -1,0 +1,59 @@
+{
+  "technique": "Few-shot (k labelled target/class)",
+  "by_k": {
+    "k=5": {
+      "ResNet linear-probe": {
+        "acc": 0.8008,
+        "macro_f1": 0.7989
+      },
+      "CLIP linear-probe": {
+        "acc": 0.6675,
+        "macro_f1": 0.6626
+      },
+      "CLIP Tip-Adapter": {
+        "acc": 0.6783,
+        "macro_f1": 0.6756
+      },
+      "Ensemble (all 3)": {
+        "acc": 0.8133,
+        "macro_f1": 0.814
+      }
+    },
+    "k=10": {
+      "ResNet linear-probe": {
+        "acc": 0.8775,
+        "macro_f1": 0.8769
+      },
+      "CLIP linear-probe": {
+        "acc": 0.8133,
+        "macro_f1": 0.8111
+      },
+      "CLIP Tip-Adapter": {
+        "acc": 0.6858,
+        "macro_f1": 0.6834
+      },
+      "Ensemble (all 3)": {
+        "acc": 0.8917,
+        "macro_f1": 0.8927
+      }
+    },
+    "k=20": {
+      "ResNet linear-probe": {
+        "acc": 0.8775,
+        "macro_f1": 0.8777
+      },
+      "CLIP linear-probe": {
+        "acc": 0.8308,
+        "macro_f1": 0.8314
+      },
+      "CLIP Tip-Adapter": {
+        "acc": 0.6875,
+        "macro_f1": 0.6844
+      },
+      "Ensemble (all 3)": {
+        "acc": 0.8842,
+        "macro_f1": 0.8839
+      }
+    }
+  }
+}

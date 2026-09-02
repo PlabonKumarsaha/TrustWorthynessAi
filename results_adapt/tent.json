@@ -1,0 +1,13 @@
+{
+  "technique": "TENT (label-free)",
+  "deepweeds": {
+    "TENT-ResNet": {
+      "acc": 0.6783,
+      "macro_f1": 0.6761
+    },
+    "TENT-ResNet + CLIP ens": {
+      "acc": 0.7333,
+      "macro_f1": 0.7307
+    }
+  }
+}

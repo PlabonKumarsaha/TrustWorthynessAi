@@ -1,0 +1,21 @@
+{
+  "technique": "Ensemble (label-free)",
+  "deepweeds": {
+    "ResNet only": {
+      "acc": 0.6658,
+      "macro_f1": 0.6739
+    },
+    "CLIP only": {
+      "acc": 0.6717,
+      "macro_f1": 0.6684
+    },
+    "ResNet + CLIP": {
+      "acc": 0.7333,
+      "macro_f1": 0.7301
+    },
+    "AdaBN-ResNet + CLIP": {
+      "acc": 0.71,
+      "macro_f1": 0.7063
+    }
+  }
+}
