@@ -1,0 +1,22 @@
+{
+  "baseline_confidence>=0.9": {
+    "ResNet": {
+      "acc": 0.7308,
+      "macro_f1": 0.7363
+    },
+    "ResNet+CLIP": {
+      "acc": 0.7558,
+      "macro_f1": 0.7595
+    }
+  },
+  "proposed_conformal+agreement": {
+    "ResNet": {
+      "acc": 0.775,
+      "macro_f1": 0.7644
+    },
+    "ResNet+CLIP": {
+      "acc": 0.8033,
+      "macro_f1": 0.7958
+    }
+  }
+}

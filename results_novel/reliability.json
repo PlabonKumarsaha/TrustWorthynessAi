@@ -1,0 +1,88 @@
+{
+  "experts": [
+    "ResNet",
+    "CLIP"
+  ],
+  "n_test": 1200,
+  "single_acc": {
+    "ResNet": 0.6658,
+    "CLIP": 0.6717
+  },
+  "at_coverage_0.5": {
+    "ResNet-confidence": 0.82,
+    "CLIP-confidence": 0.875,
+    "ensemble-confidence": 0.9283
+  },
+  "agreement": {
+    "coverage": 0.5842,
+    "precision_on_agreed": 0.8759,
+    "precision_on_disagreed": 0.5331,
+    "error_concentration": 0.7281
+  },
+  "conformal": {
+    "ensemble": [
+      {
+        "alpha": 0.05,
+        "coverage": 1.0,
+        "precision": 0.7333
+      },
+      {
+        "alpha": 0.1,
+        "coverage": 1.0,
+        "precision": 0.7333
+      },
+      {
+        "alpha": 0.2,
+        "coverage": 0.9975,
+        "precision": 0.7343
+      },
+      {
+        "alpha": 0.3,
+        "coverage": 0.8925,
+        "precision": 0.7759
+      },
+      {
+        "alpha": 0.4,
+        "coverage": 0.6783,
+        "precision": 0.8833
+      },
+      {
+        "alpha": 0.5,
+        "coverage": 0.5158,
+        "precision": 0.9208
+      }
+    ],
+    "ensemble+agreement": [
+      {
+        "alpha": 0.05,
+        "coverage": 1.0,
+        "precision": 0.8759
+      },
+      {
+        "alpha": 0.1,
+        "coverage": 1.0,
+        "precision": 0.8759
+      },
+      {
+        "alpha": 0.2,
+        "coverage": 0.8359,
+        "precision": 0.9283
+      },
+      {
+        "alpha": 0.3,
+        "coverage": 0.6862,
+        "precision": 0.9626
+      },
+      {
+        "alpha": 0.4,
+        "coverage": 0.5563,
+        "precision": 0.9769
+      },
+      {
+        "alpha": 0.5,
+        "coverage": 0.4536,
+        "precision": 0.9811
+      }
+    ]
+  }
+}
