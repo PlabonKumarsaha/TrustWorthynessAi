@@ -1,224 +1,245 @@
-# Cross-Domain Weed Species Classification: Full Project Report
+# Cross-domain weed classification: progress report
 
-**Research question.** Can classifiers trained on *freely available, globally-sourced web imagery*
-(GBIF) be deployed on *Australian field imagery* (DeepWeeds) without any local annotation — and
-how far can the resulting domain gap be closed?
+## Aim
 
-**Hardware.** All experiments on a single Apple M4 (24 GB, MPS backend). No GPU cluster.
+The question I set out to answer is whether a weed classifier trained entirely on free,
+web-sourced imagery can be deployed on Australian field photographs without any local
+annotation. Labelling rangeland imagery is expensive, and there is a large amount of
+already-labelled plant photography sitting in biodiversity databases, so if the transfer works
+it would remove most of the annotation cost from a weed-mapping pipeline. The obvious risk is
+domain shift: web photographs and field photographs of the same species do not look alike.
 
----
+All experiments were run on a single M4 MacBook, which shaped some of the design decisions —
+in particular the reliance on frozen features and linear probes rather than repeated
+end-to-end fine-tuning.
 
-# 1. Datasets
+## 1. Data
 
-## 1.1 Source domain — GBIF "global" weed imagery
+### Source: GBIF
 
-Built by querying the **Global Biodiversity Information Facility** for occurrence photographs of
-eight weed species, deliberately **excluding Australia** so the source and target domains differ.
+I built the training set by querying GBIF for occurrence photographs of eight weed species,
+resolving each species by scientific name rather than common name, and excluding any record
+from Australia so that the source and target domains genuinely differ. Only CC0 and CC-BY
+licensed media were kept. The download was capped at 400 images per class, giving 3,200 images
+which I split 70/15/15 into 280 train, 60 validation and 60 test per class. Everything is
+224×224 RGB JPEG.
 
-| Property | Value |
+The eight species and the names used to resolve them:
+
+| Folder | Scientific name |
 |---|---|
-| Origin | GBIF citizen-science / herbarium occurrence photos (iNaturalist, Pl@ntNet, etc.) |
-| Geographic filter | `EXCLUDE_COUNTRY = "AU"` — non-Australian only |
-| Licence filter | CC0 and CC-BY only |
-| Cap | 400 images per class (3,200 total) |
-| Splits | 70/15/15 → 280 train / 60 val / 60 test per class |
-| Format | 224×224 RGB JPEG, 5–23 KB (median ~13 KB) |
-| Character | Curated/deliberate plant, flower and specimen shots |
+| chinee_apple | *Ziziphus mauritiana* |
+| lantana | *Lantana camara* |
+| parkinsonia | *Parkinsonia aculeata* |
+| parthenium | *Parthenium hysterophorus* |
+| prickly_acacia | *Vachellia nilotica* (syn. *Acacia nilotica*) |
+| rubber_vine | *Cryptostegia grandiflora* |
+| siam_weed | *Chromolaena odorata* |
+| snake_weed | *Stachytarpheta* (genus only) |
 
-**Species (matched by scientific name, not common name):**
+Seven of the eight resolve to an exact species. Snake weed is the exception: I could only match
+it at genus level, so that folder may contain several *Stachytarpheta* species. This turned out
+to matter later, because snake weed consistently behaves as the worst-performing class.
 
-| idx | Folder | Scientific name | Match quality |
+In character these are mostly deliberate photographs — a plant, a flower, sometimes a herbarium
+specimen — usually with the subject centred and reasonably well lit.
+
+### Target: DeepWeeds
+
+DeepWeeds (Olsen et al., 2019) contains 17,509 photographs taken in situ in northern Australian
+rangelands, covering the same eight species plus a ninth "negative" class of vegetation that is
+not a target weed. The weed classes are close to balanced, between 1,009 and 1,125 images each,
+but the negative class is large: 9,106 images, slightly more than half the dataset. The images
+are cluttered field scenes with natural lighting, soil and occlusion, which is exactly the
+distribution shift I wanted to measure.
+
+For most of the project I evaluated on subsets — first four species, then all eight, both with
+the negative class removed and classes balanced by subsampling. Only in the final phase did I
+evaluate on the complete 17,509 images with the natural distribution and the negatives included.
+That decision turned out to be important and I return to it below.
+
+## 2. Related work
+
+The obvious reference point is the DeepWeeds paper itself, which reports 95.7% with a ResNet-50
+and 95.1% with Inception-v3. Those numbers are in-domain and fully supervised — the model is
+trained on DeepWeeds itself — so they represent a ceiling rather than a competitor. More recent
+in-domain work using latent-diffusion augmentation reaches about 98.5%.
+
+Domain adaptation for agricultural imagery is an active area. Computers and Electronics in
+Agriculture published a self-training approach for weed segmentation in 2024, and a CVPR
+workshop paper the same year used greedy pseudo-labelling for the same task. Closest to my own
+setup is "From Web Data to Real Fields" (2025), which adapts detectors from internet-scraped
+imagery to unlabelled robot-collected field data using an attention-based adversarial
+discriminator, reporting a 7.5% detection improvement. A 2025 review of domain adaptation in
+agricultural image analysis gives the standard taxonomy: discrepancy methods such as CORAL and
+MMD, adversarial approaches such as DANN, style transfer, pseudo-labelling, Fourier methods and
+test-time adaptation. For context on how badly cross-dataset transfer usually goes, plant disease
+models trained on PlantVillage typically drop to around 68% on PlantDoc.
+
+On the source-free and test-time side the standard methods are TENT, which minimises prediction
+entropy over BatchNorm affine parameters; AdaBN, which simply recomputes BatchNorm statistics on
+the target; SHOT, which freezes the source classifier and adapts the feature extractor using
+information maximisation and pseudo-labels; and class-balanced self-training. There are recent
+surveys of both source-free UDA and test-time adaptation.
+
+Vision-language models have been applied to this problem too. Tip-Adapter provides a
+training-free cache adapter for few-shot CLIP; CoOp and CLIP-Adapter learn prompts or small
+adapters instead. ReCLIP uses agreement between CLIP's own image and text encoders to select
+pseudo-labels, and Co-learn++ and related work use CLIP as a pseudo-label teacher for
+source-free adaptation. The strongest recent result in this family is RCL, which uses multimodal
+LLMs to guide a reliability curriculum and reports state-of-the-art results with a 9.4%
+improvement on DomainNet. In agriculture specifically there is AgriCLIP, CropVLM, WeedCLR and
+AgroBench, and a 2025 paper asking directly whether VLMs can zero-shot replace supervised
+classifiers in agriculture — the answer being not yet for fine-grained species.
+
+One line of work is directly relevant to the conclusion I initially wanted to draw. A 2025 paper
+on class-imbalanced federated source-free adaptation argues explicitly for shifting attention
+from improving adaptation methods to improving feature extractors, and another shows large
+self-supervised models closing the gap in domain-adaptive object detection. There is a similar
+reality-check paper in digital pathology. This means the claim "the backbone matters more than
+the adaptation method" is already in the literature for other settings, and I cannot present it
+as new. What I can contribute is a more specific finding about how the two interact, which I
+come back to in section 4.
+
+## 3. What I tried
+
+I worked through this in roughly ten stages. The order matters because several later decisions
+were reactions to earlier results.
+
+### Starting with CLIP
+
+I began with CLIP ViT-B/32 as a vision-language model, on all eight species. Zero-shot
+classification using text prompts gave 38.8% on the GBIF test split with prompt ensembling, but
+only 11.7% on DeepWeeds, which is essentially the 12.5% chance level for eight classes.
+Fine-tuning with LoRA on about 1.2% of the parameters lifted GBIF to 88.5% and DeepWeeds to
+35.2%. So adaptation helped the target substantially in relative terms, but the gap widened
+rather than closed.
+
+I then tried test-time methods on the frozen model: test-time augmentation, Sinkhorn
+distribution alignment, and TENT. TTA alone did almost nothing. Distribution alignment helped
+noticeably. Switching to a larger backbone, ViT-L/14 trained on LAION-2B, and combining it with
+TTA and alignment reached 27.5% — still poor, but more than double the zero-shot baseline. TENT
+failed outright here; its macro-F1 collapsed to 0.03. In hindsight this makes sense: entropy
+minimisation sharpens whatever the model already believes, and when the model is at chance and
+confidently wrong, sharpening makes things worse.
+
+### Comparing three model families
+
+To get a cleaner picture I dropped to four visually distinct species with exact taxonomic
+matches (lantana, parkinsonia, parthenium, rubber vine) and compared three families trained on
+GBIF: a Random Forest on HSV colour histograms and GLCM texture features, a fine-tuned
+ResNet-50, and CLIP with LoRA.
+
+| Model | GBIF test | DeepWeeds | Gap |
 |---|---|---|---|
-| 0 | chinee_apple | *Ziziphus mauritiana* | exact species |
-| 1 | lantana | *Lantana camara* | exact species |
-| 2 | parkinsonia | *Parkinsonia aculeata* | exact species |
-| 3 | parthenium | *Parthenium hysterophorus* | exact species |
-| 4 | prickly_acacia | *Vachellia nilotica* (syn. *Acacia nilotica*) | exact, updated nomenclature |
-| 5 | rubber_vine | *Cryptostegia grandiflora* | exact species |
-| 6 | siam_weed | *Chromolaena odorata* | exact species |
-| 7 | snake_weed | ***Stachytarpheta*** | **genus level only** ⚠ |
+| ResNet-50, fine-tuned | 94.6% | 65.3% | 29.3 |
+| CLIP ViT-B/32 + LoRA | 98.8% | 58.4% | 40.3 |
+| CLIP ViT-B/32, zero-shot | 80.8% | 28.1% | 52.8 |
+| Random Forest (colour + texture) | 68.3% | 27.7% | 40.7 |
 
-⚠ `snake_weed` is the one class matched only at genus level. It behaves measurably worse
-throughout (it becomes a "sink" class), which is consistent with a heterogeneous source class.
+The result I did not expect is that the model with the best in-domain accuracy was not the best
+on the target. CLIP with LoRA wins on GBIF by four points but loses to ResNet-50 by seven points
+on DeepWeeds. It fits the source domain harder and generalises worse. Selecting a deployment
+model on in-domain accuracy would have picked the wrong one.
 
-## 1.2 Target domain — DeepWeeds (Australian)
+### Preprocessing
 
-| Property | Value |
+Since a good part of the shift is colour and lighting, I tried four preprocessing techniques
+applied to the target images at inference, with the models frozen. CLAHE contrast normalisation
+gave small but consistent gains (+1.8 on ResNet, +3.2 on the Random Forest) and was the only
+technique that never hurt. Histogram matching and Fourier Domain Adaptation each gave about
++1.3 to CLIP but cost the CNN about a point. Reinhard colour transfer was a disaster: it cost
+ResNet-50 twenty points and CLIP thirty. Forcing the source colour statistics onto the target
+apparently destroys the colour information the classifier actually relies on.
+
+The useful conclusion is that the best preprocessing depends on the model — the CNN prefers
+contrast normalisation, CLIP prefers spectral or tonal alignment — and that aggressive global
+colour remapping should be avoided.
+
+### Adaptation methods
+
+Working still on four species, I tried AdaBN, TENT, ensembling and self-training. AdaBN on its
+own actually hurt, dropping ResNet from 66.6% to 63.5%. TENT gave about a point. Ensembling
+ResNet with CLIP was the largest easy gain, taking either model from around 67% to 73.3%,
+presumably because the two make different mistakes.
+
+The best result in this phase came from self-training: using the ResNet-CLIP ensemble as a
+teacher, keeping only predictions above 0.9 confidence, and fine-tuning ResNet on those
+pseudo-labels. The confident subset turned out to be 98% correct, and two rounds took ResNet to
+82.8% and the ensemble to 84.1%, without using a single DeepWeeds label. For comparison, giving
+the model 10 real labels per class and training a linear probe reached 89.2%.
+
+Tip-Adapter, which I had expected to do well, barely moved the needle — around 68% regardless of
+the number of shots. The frozen CLIP features simply are not discriminative enough on these
+species for a cache-based method to exploit.
+
+### A selection rule of my own
+
+Two observations from the above suggested something. First, single-model confidence is not
+trustworthy under this shift — CLIP was confidently wrong. Second, when ResNet and CLIP agreed,
+they were right 87.6% of the time, and when they disagreed, only 53.3%. In fact 72.8% of all
+errors fell in the disagreement set.
+
+So I built a pseudo-label selection rule that keeps a sample only if the two architectures agree
+and it passes a conformal threshold calibrated on a small held-out pool, and compared it against
+plain confidence thresholding in an otherwise identical self-training pipeline. The proposed rule
+kept more data (51% vs 35% coverage) at equal or better precision, and improved the final result
+from 75.6% to 80.3%. That is a 4.7 point gain attributable purely to the selection rule.
+
+I later checked the literature more carefully and found that ReCLIP, Co-learn++ and CLIP-OT
+already occupy much of this space, so the idea is less novel than I thought when I built it.
+
+### Changing the backbone
+
+The largest single improvement in the whole project came from replacing the backbone. A linear
+probe on frozen DINOv2 ViT-B/14 features, trained only on GBIF labels, reached 78.2% on the
+four-species DeepWeeds subset at 224 pixels, 88.2% at 336 and 90.8% at 448. Adding label-free
+self-training took it to 94.2%. That is more than twenty points above the fine-tuned ResNet, with
+no adaptation machinery at all beyond self-training.
+
+Resolution mattered far more than I expected — ten points between 224 and 336 alone. Two things
+I tried here did not work: fusing multiple resolutions was worse than simply using the best one,
+and ensembling DINOv2 with the weaker ResNet and CLIP models dropped it from 88.2% to 85.2%.
+Averaging models of unequal quality drags the good one down, which contradicts the conclusion I
+had drawn earlier when the two models being ensembled were evenly matched.
+
+### Scaling to eight species
+
+At this point I had a 94.2% result and was fairly pleased with it, so the next step was to check
+it held on all eight species. It did not. The same pipeline gave 57.8% at 336 pixels and 63.8% at
+448, rising only to 68.8% with self-training. Moving from four classes to eight cost roughly
+twenty-five points. The four-species result had been substantially an artefact of an easier task.
+
+The per-class breakdown showed why, and pointed at the fix. Parthenium and snake weed had high
+recall but low precision — 0.96 recall at 0.44 precision for parthenium — while prickly acacia
+collapsed to 0.32 recall despite 0.69 precision. Two classes were acting as sinks, absorbing
+predictions that belonged to others. Worse, self-training made this progressively worse:
+pseudo-label precision fell from 81.3% to 77.2% to 74.9% across rounds as the sinks swallowed
+more of the pseudo-labelled set.
+
+Applying Sinkhorn distribution alignment and class-balanced selection fixed most of it:
+
+| Method (8 species) | DeepWeeds |
 |---|---|
-| Origin | In-situ photographs, northern Australian rangelands (Queensland) |
-| Size | **17,509 images**, native 256×256 |
-| Classes | 8 weed species (8,403 images) + **"negative"** (9,106 images) |
-| Natural weed distribution | 1,009–1,125 per class — **near-balanced** |
-| Access | TensorFlow Datasets `deep_weeds`; repo `AlexOlsen/DeepWeeds` |
-| Character | Cluttered field scenes: natural light, soil, occlusion, varied scale |
+| DINOv2 @448, no adaptation | 63.8% |
+| plus naive self-training | 68.8% |
+| plus distribution alignment only | 73.2% |
+| plus class-balanced self-training only | 71.8% |
+| plus both | 80.6% |
 
-**Note:** over half the dataset (9,106 / 17,509) is *negative* — vegetation that is not a target
-weed. Early experiments dropped this class; the final evaluation includes it.
+Per-class F1 evened out from a 0.43–0.90 spread to 0.71–0.90, and — the part I find most
+interesting — pseudo-label precision stopped decaying, holding at 89.6%, 89.0%, 87.6% across the
+three rounds instead of falling. Alignment does not just add accuracy; it prevents self-training
+from degrading itself.
 
-## 1.3 Evaluation subsets used
+### A factorial comparison
 
-| Subset | Composition | Used in |
-|---|---|---|
-| 4-species | 1,200 imgs (300/class), negatives dropped | Phases 2–6 |
-| 8-species balanced | 1,600 imgs (200/class), negatives dropped | Phases 1, 7–8 |
-| **Full realistic** | **17,509 imgs, natural distribution, negatives included** | Phases 9–10 |
+To understand how much of the result came from each ingredient I ran a factorial over three
+backbones (ResNet-50, CLIP ViT-B/32, DINOv2), three resolutions and five adaptation settings,
+using an identical frozen-feature and linear-probe protocol throughout so the classifier was
+held constant.
 
----
-
-# 2. Related work (state of the art)
-
-## 2.1 The benchmark itself
-- **DeepWeeds** (Olsen et al., *Scientific Reports* 2019): ResNet-50 **95.7%**, Inception-v3 95.1%
-  — both *in-domain, fully supervised*. This is the ceiling reference.
-- Recent in-domain work reaches **98.5%** using latent-diffusion data augmentation.
-
-## 2.2 Domain adaptation in agriculture
-- **UDA with self-training for weed segmentation** (Computers and Electronics in Agriculture, 2024)
-  — teacher–student with EMA, pseudo-labelled target.
-- **UDA for weed segmentation via greedy pseudo-labelling** (CVPR-W 2024).
-- **From Web Data to Real Fields** (2025) — internet imagery → unlabelled robot field data via an
-  attention-based adversarial discriminator (MAAD); +7.5% detection, +5.1% keypoint.
-- **Domain Adaptation for Big Data in Agricultural Image Analysis** (2025 review) — taxonomy:
-  discrepancy (CORAL/MMD), adversarial (DANN), style transfer, pseudo-labelling, Fourier, TTA, VLM.
-- Cross-dataset plant disease transfer typically collapses (PlantVillage→PlantDoc ≈ **68%**).
-
-## 2.3 Source-free / test-time adaptation
-- **TENT** (ICLR 2021) — entropy minimisation over BatchNorm affine parameters.
-- **AdaBN** — recompute BN statistics on the target.
-- **SHOT** — frozen source classifier + information maximisation + pseudo-labels.
-- **CBST** — class-balanced self-training.
-- **Source-Free UDA survey** (Neurocomputing 2024); **TTA survey** (arXiv 2303.15361).
-
-## 2.4 Vision-language models
-- **Tip-Adapter** (ECCV 2022) — training-free cache adapter; **CoOp**, **CLIP-Adapter**.
-- **ReCLIP** (2023) — cross-modal agreement pseudo-labels for source-free CLIP adaptation.
-- **Co-learn++**, **PADCLIP**, **CLIP-powered dual-branch SFUDA** (2024) — CLIP as pseudo-label teacher.
-- **RCL** (2024/25) — MLLM-guided reliability curriculum, **SOTA, +9.4% DomainNet**.
-- **AgriCLIP**, **CropVLM**, **WeedCLR**, **AgroBench**, *"Are VLMs ready to zero-shot replace
-  supervised classification in agriculture?"* (2025) — VLMs still weak on fine-grained agriculture.
-- **iNatAg** — 4.7M images, 2,959 crop/weed species from citizen-science sources.
-
-## 2.5 Foundation models vs. domain adaptation ⚠ directly relevant
-- **Rethinking the Backbone in Class-Imbalanced Federated Source-Free DA** (2025) — argues for
-  *"rethinking the focus from enhancing DA methods to improving feature extractors"*.
-- **Large Self-Supervised Models Bridge the Gap in Domain Adaptive Object Detection** (2025).
-- **Do Foundation Models Truly Outperform Domain-Specific Models?** (digital pathology).
-
-**Implication:** the claim "a strong backbone matters more than the DA method" is **already
-published** for other settings. Our contribution must be a *nuance* on it, not a restatement.
-
----
-
-# 3. Approaches attempted, with benchmarks
-
-## Phase 1 — VLM baseline (CLIP), 8 species, balanced subset
-
-| Model | GBIF test | DeepWeeds | Drop |
-|---|---|---|---|
-| CLIP ViT-B/32 zero-shot (single prompt) | 35.4% | 12.3% | −23.1 |
-| CLIP ViT-B/32 zero-shot (prompt ensemble) | 38.8% | 11.7% | −27.1 |
-| CLIP + LoRA (1.16% of params trainable) | 88.5% | 35.2% | −53.3 |
-
-Chance = 12.5%. Zero-shot CLIP is **at chance** on the target.
-
-## Phase 1b — Test-time adaptation on CLIP (label-free), 8 species
-
-| Backbone | base | +DA | +TTA | +TTA+DA | TENT |
-|---|---|---|---|---|---|
-| ViT-B/32 | 11.7% | 14.9% | 11.5% | 15.4% | 12.5% |
-| ViT-L/14 (laion2b) | 14.8% | 26.2% | 15.2% | **27.5%** | — |
-
-TENT **failed** (macro-F1 collapsed to 0.03) — entropy minimisation reinforces confident-but-wrong
-predictions when the base model is near chance.
-
-## Phase 2 — Three model families, 4 species (chance 25%)
-
-| Model | GBIF (in-domain) | DeepWeeds | Gap |
-|---|---|---|---|
-| DL — ResNet-50 fine-tuned | 94.6% | 65.3% | −29.3 |
-| VLM — CLIP + LoRA | 98.8% | 58.4% | −40.3 |
-| VLM — CLIP zero-shot | 80.8% | 28.1% | −52.8 |
-| ML — Random Forest (HSV + GLCM) | 68.3% | 27.7% | −40.7 |
-
-**Finding:** highest in-domain ≠ best out-of-domain. CLIP+LoRA wins in-domain but overfits the
-source domain harder than ResNet-50.
-
-## Phase 3 — Preprocessing techniques (label-free), 4 species
-
-| Technique | ML | DL | VLM |
-|---|---|---|---|
-| Baseline | 27.7% | 66.6% | 67.2% |
-| **CLAHE** | **30.8% (+3.2)** | **68.3% (+1.8)** | 67.2% (+0.1) |
-| Histogram matching → GBIF | 29.9% | 65.4% (−1.2) | 68.5% (+1.3) |
-| Fourier Domain Adaptation (β=0.01) | 27.0% | 65.3% (−1.2) | 68.5% (+1.3) |
-| Reinhard colour transfer | 26.8% | **46.0% (−20.6)** | **37.2% (−30.0)** |
-
-**Findings:** CLAHE is the only universally safe gain. **Reinhard colour transfer is catastrophic** —
-forcing source colour statistics onto the target destroys discriminative colour. The best
-preprocessing is **model-dependent** (CNN prefers contrast normalisation; CLIP prefers spectral).
-
-## Phase 4 — Domain adaptation, 4 species
-
-| Method | DeepWeeds | Target labels |
-|---|---|---|
-| Baseline (best single model) | ~67% | 0 |
-| AdaBN-ResNet | 63.5% (**worse**) | 0 |
-| TENT-ResNet | 67.8% | 0 |
-| AdaBN-ResNet + CLIP | 71.0% | 0 |
-| ResNet + CLIP ensemble | 73.3% | 0 |
-| TENT-ResNet + CLIP | 73.3% | 0 |
-| CLIP-guided self-training (ResNet) | 82.8% | 0 |
-| **Self-training + CLIP ensemble** | **84.1%** | **0** |
-| Few-shot 5/class | 80.1–81.3% | 20 |
-| Few-shot 10/class (ensemble) | **89.2%** | 40 |
-| Few-shot 20/class | 88.4% | 80 |
-
-Self-training worked because the ensemble teacher was **98% precise** on its confident subset.
-**Tip-Adapter barely moved** (67.8–68.8%) — frozen CLIP features aren't discriminative enough here.
-
-## Phase 5 — Conformal cross-architecture selection (our own method attempt)
-
-Controlled comparison — identical self-training pipeline, only the pseudo-label selection rule differs:
-
-| Selection rule | Coverage | Precision | Final ResNet | Final ResNet+CLIP |
-|---|---|---|---|---|
-| Confidence ≥ 0.9 | 35% | 97% | 73.1% | 75.6% |
-| **Conformal + cross-arch agreement** | **51%** | **98%** | **77.5%** | **80.3%** |
-
-**+4.7 points** from the selection rule alone. Supporting evidence: **72.8% of all errors fall in
-the cross-architecture disagreement set**; agreed subset precision 87.6% vs 53.3% disagreed.
-
-## Phase 6 — DINOv2 and resolution scaling, 4 species
-
-| Model | GBIF | DeepWeeds |
-|---|---|---|
-| DINOv2 @224 (linear probe) | 99.2% | 78.2% |
-| DINOv2 @336 | 99.6% | 88.2% |
-| DINOv2 @448 | — | 90.8% |
-| + label-free self-training (3 rounds) | — | **94.2%** |
-
-Also tested and **failed**: multi-resolution concat (88.8%) and prob-average (90.1%), both below
-best single resolution; and naive ensembling of DINOv2 with weaker models (88.2% → **85.2%**).
-
-## Phase 7 — Full 8-species validation (chance 12.5%)
-
-| Method | DeepWeeds |
-|---|---|
-| DINOv2 @336 | 57.8% |
-| DINOv2 @448 | 63.8% |
-| + naive self-training (3 rounds) | 68.8% |
-| + Sinkhorn DA only | 73.2% |
-| + CBST only | 71.8% |
-| **+ DA + CBST** | **80.6%** (macro-F1 0.806) |
-
-⚠ **The 4-species 94.2% did NOT survive** → 68.8%. Subset evaluation inflated the result by ~25 pts.
-
-**Mechanism found:** naive self-training *amplifies* class bias (pseudo-label precision decays
-81.3% → 77.2% → 74.9%); with distribution alignment it *holds* (89.6% → 89.0% → 87.6%).
-
-## Phase 8 — Factorial study (backbone × resolution × method)
-
-| Backbone @ res | in-domain | none | DA | ST | CBST | DA+CBST |
+| Backbone at resolution | in-domain | none | DA | ST | CBST | DA+CBST |
 |---|---|---|---|---|---|---|
 | ResNet-50 @224 | 79.4 | 29.8 | 33.2 | 29.1 | 29.8 | 36.0 |
 | ResNet-50 @336 | 81.9 | 33.2 | 38.0 | 32.6 | 33.9 | 41.2 |
@@ -228,118 +249,127 @@ best single resolution; and naive ensembling of DINOv2 with weaker models (88.2%
 | DINOv2 @336 | 94.2 | 57.8 | 69.1 | 60.8 | 62.8 | 79.8 |
 | DINOv2 @448 | 95.2 | 63.8 | 73.2 | 68.8 | 71.8 | 80.6 |
 
-**Spread attributable to each factor:** backbone **30.8 pp** > adaptation method **11.9 pp** >
-resolution **9.8 pp**.
+The spread attributable to the backbone is 30.8 points, against 11.9 for the adaptation method
+and 9.8 for resolution. My hypothesis going in was that the ranking of adaptation methods would
+break down once the backbone was strong enough — that conclusions drawn on ResNet-50 at 224
+pixels would not transfer. That was wrong. Spearman correlation between the rankings from
+different backbones is 0.80 to 0.90; the ordering is essentially stable.
 
-**Hypothesis tested and REFUTED:** method rankings do *not* collapse across backbones —
-Spearman ρ = **0.80–0.90**; ordering (`DA+CBST > DA/CBST > none/ST`) is stable.
+What the data does support is the opposite of what I assumed. The benefit of adaptation grows
+with the quality of the representation: distribution alignment plus class-balanced self-training
+adds 6.2 points on ResNet-50 at 224 but 16.8 points on DINOv2 at 448. Backbone quality and
+adaptation are complementary rather than substitutes, which is a more specific claim than the
+2025 papers arguing that foundation models should replace adaptation methods.
 
-**Better-supported finding:** adaptation gains **grow with representation quality** —
-DA+CBST adds **+6.2 pp** on ResNet-50@224 but **+16.8 pp** on DINOv2@448. Backbone and
-adaptation are **complementary, not substitutes** — a nuance on the 2025 "foundation models
-replace DA" literature.
+### Testing it under realistic conditions
 
-## Phase 9 — Realistic deployment (FULL 17,509 images, natural distribution, negatives included)
+Everything up to this point used balanced subsets with the negative class removed. Both of those
+choices flatter the result, so the last stage removed them: the full 17,509 images, the natural
+class distribution, and the 9,106 negatives included.
 
-| Method (weeds only, n = 8,403, natural imbalance) | Accuracy | macro-F1 |
+The closed-set result held up. On the natural, unbalanced weed set the unadapted probe gives
+64.9%, alignment takes it to 72.9%, and alignment plus class-balanced self-training reaches
+80.1% with a macro-F1 of 0.801 — against 80.6% on the balanced subset. The subsampling had not
+been inflating anything, for the straightforward reason that DeepWeeds' weed classes are already
+close to balanced.
+
+Two things did not hold up.
+
+The first is the class prior. Alignment needs to know the target class distribution, and I had
+been assuming uniform, which happened to be roughly correct. To remove the assumption I estimated
+the prior from unlabelled data using EM. The estimate was badly wrong — an L1 error of 0.577 —
+and using it dropped accuracy to 61.3%, which is worse than not adapting at all. EM inherits the
+model's existing bias toward the sink classes and then amplifies it. So the eight to fifteen
+point gain from alignment rests on prior knowledge that a practitioner may not have.
+
+The second is open-set rejection, and this is the more serious problem. A deployed system has to
+reject the vegetation that is not a target weed, and over half of DeepWeeds is exactly that. I
+compared eleven label-free rejection scores:
+
+| Score | AUROC | FPR at 95% TPR |
 |---|---|---|
-| No adaptation | 64.9% | 0.653 |
-| + DA (uniform prior) | 72.9% | 0.730 |
-| + DA (oracle prior) | 73.2% | 0.732 |
-| + DA (**EM-estimated** prior, label-free) | **61.3%** ← *worse than nothing* | 0.613 |
-| **+ DA + CBST (uniform), 3 rounds** | **80.1%** | **0.801** |
+| kNN in feature space | 0.808 | 63.8% |
+| Energy | 0.772 | 76.4% |
+| MaxLogit | 0.770 | 75.6% |
+| Mahalanobis | 0.769 | 76.3% |
+| Entropy | 0.733 | 78.8% |
+| Max softmax | 0.718 | 83.7% |
+| Relative Mahalanobis | 0.677 | 91.9% |
+| CLIP text-defined negatives | 0.634 | 85.3% |
+| Cross-architecture disagreement | 0.545 | 94.4% |
 
-**The headline result held** (80.1% vs 80.6% on the balanced subset) because DeepWeeds' weed
-classes are *naturally* near-balanced — so the earlier subsampling was not distorting.
+Only kNN improved on the earlier baseline, and only modestly. Two ideas of my own failed.
+Describing non-target vegetation in language — grass, bare soil, gravel, native bushland — and
+using CLIP to reject anything matching those prompts gave 0.634, well below simple energy
+scoring. And cross-architecture disagreement, which had predicted classification errors so well
+earlier, is essentially at chance (0.545) for detecting whether an image is out of distribution.
+Those are different quantities and I had conflated them. Fusing scores also made things worse
+rather than better, which is the third time in this project that combining signals of unequal
+quality has hurt.
 
-**FAILURE:** label-free prior estimation via EM (Saerens et al.) has **L1 error 0.577** and makes
-adaptation *worse than no adaptation*. The DA gain depends on prior knowledge.
+The number that matters operationally is the last column. To catch 95% of real weeds the best
+method still accepts 64% of ordinary vegetation. An AUROC of 0.81 sounds respectable and is
+useless for a sprayer.
 
-## Phase 10 — Open-set rejection (9,106 unseen negatives)
+## 4. Where things stand
 
-| Score | AUROC | AUPR | **FPR@95TPR** |
-|---|---|---|---|
-| **kNN (feature-space, k=10)** | **0.808** | 0.806 | **63.8%** |
-| Energy | 0.772 | 0.774 | 76.4% |
-| MaxLogit | 0.770 | 0.773 | 75.6% |
-| Mahalanobis | 0.769 | 0.768 | 76.3% |
-| fuse kNN+CLIPtext | 0.752 | 0.746 | 73.1% |
-| Entropy | 0.733 | 0.740 | 78.8% |
-| fuse kNN+CLIPtext+XArch | 0.728 | 0.733 | 82.2% |
-| MSP | 0.718 | 0.733 | 83.7% |
-| Relative Mahalanobis | 0.677 | 0.706 | 91.9% |
-| CLIP text-defined negatives | 0.634 | 0.599 | 85.3% |
-| Cross-architecture disagreement | 0.545 | 0.545 | 94.4% |
+Training only on free GBIF imagery, with no Australian labels at all, the system reaches 80.1%
+accuracy and 0.801 macro-F1 on the full DeepWeeds weed set, up from 64.9% unadapted and from
+11.7% for zero-shot CLIP at the start of the project. The fully supervised in-domain reference
+is 95.7%.
 
-**Only kNN improved** on the baseline. Two of our own proposals failed: **language-defined
-negatives** (0.634) and **cross-architecture disagreement as an OOD signal** (0.545 ≈ chance).
-Score **fusion degraded** the best score.
+The findings I am reasonably confident in are these. Backbone choice dominates everything else,
+and was worth more than all the adaptation methods combined. Input resolution is a first-class
+variable and is under-reported in this literature. Adaptation and representation quality are
+complementary, with adaptation gains growing rather than shrinking as the backbone improves.
+Class-bias correction is unnecessary at four classes and essential at eight. Distribution
+alignment stops self-training from degrading itself. And evaluating on a species subset inflated
+my result by roughly twenty-five points, which makes me wary of subset results elsewhere.
 
----
+The failures are worth recording too, since several cost me time and might save someone else's.
+Label-free prior estimation does not work here and actively backfires. Open-set rejection is not
+deployable at the accuracy I can currently reach. Reinhard colour transfer is harmful. AdaBN
+alone hurts and TENT fails on a weak base model. Tip-Adapter is no better than zero-shot on this
+task. Language-defined negatives and cross-architecture disagreement both fail as OOD signals.
+And combining signals of unequal quality has hurt every time I have tried it.
 
-# 4. Current findings and status
+## 5. Limitations
 
-## 4.1 Headline result
-> Training **only on free GBIF web imagery**, with **zero Australian labels**, the system reaches
-> **80.1% accuracy (macro-F1 0.801)** on the full, naturally-distributed DeepWeeds weed set —
-> up from 64.9% unadapted, and from 11.7% for zero-shot CLIP.
-> Fully-supervised in-domain reference: 95.7%.
+The most significant gap is that I have not implemented any published baseline — no SHOT, CORAL
+or DANN — so all comparisons are between my own variants. For a methods claim that is
+disqualifying, and it is the first thing I should fix.
 
-## 4.2 Confirmed findings
-1. **Backbone dominates** — DINOv2 over ResNet-50 was worth more than every adaptation method combined.
-2. **Resolution is a first-class lever** — 224→448 consistently pays (up to +12 pts).
-3. **Adaptation gains scale *with* backbone quality** (+6.2 → +16.8 pp) — complementary, not redundant.
-4. **Class-bias correction is essential at 8 classes** — invisible at 4 classes, worth +17 pts at 8.
-5. **Distribution alignment stops self-training from degrading itself** (precision holds ~88% vs decaying to 75%).
-6. **Subset evaluation inflates cross-domain results** by ~25 pts (4 species 94.2% → 8 species 68.8%).
+I also need to be careful about the word "seeds". The factorial ran three seeds per cell but the
+standard deviations came out as exactly zero, because a linear probe with fixed data and a
+deterministic selection rule has nothing to vary. I therefore have no variance estimate at all,
+and getting one requires resampling the splits rather than changing a random seed.
 
-## 4.3 Confirmed failures (well-evidenced negative results)
-1. **Label-free prior estimation fails** (EM L1 0.577) and backfires (61.3% vs 64.9%).
-2. **Open-set rejection is not deployable** — best FPR@95TPR = 63.8%.
-3. **Reinhard colour transfer** is catastrophic (−20/−30 pts).
-4. **AdaBN alone hurts**; **TENT fails** on a near-chance base model.
-5. **Tip-Adapter** ≈ zero-shot on this fine-grained task.
-6. **Language-defined negatives** and **cross-architecture disagreement** fail for OOD detection.
-7. **Combining unequal-quality signals consistently hurts** — observed 3× independently
-   (backbone ensembling, pseudo-label fusion, OOD score fusion).
+The frozen linear-probe protocol used in the factorial also handicaps ResNet-50, which scores
+29.8% frozen against 66.6% when fine-tuned. Some of the 30.8-point backbone spread is a
+consequence of that design choice rather than a property of the backbones.
 
-## 4.4 Limitations (honest)
-- **No published baseline implemented** (SHOT / CORAL / DANN) — the largest credibility gap.
-- **Seeds did not produce variance**: the factorial's "3 seeds" gave std = 0.0 because the
-  linear-probe + selection pipeline is deterministic. **We have no true variance estimate.**
-- **Frozen linear-probe protocol** handicaps ResNet-50 (29.8% frozen vs 66.6% fine-tuned), so the
-  30.8 pp backbone spread is partly an artefact of the evaluation design.
-- **Transductive** adaptation — needs the unlabelled target batch in hand.
-- **Single target dataset**; no CV folds; no significance testing.
-- `snake_weed` matched at genus level only.
+Beyond that: the adaptation is transductive, so it assumes the unlabelled target batch is
+available at adaptation time; there is only one target dataset; there are no cross-validation
+folds or significance tests; and snake weed is matched only at genus level.
 
-## 4.5 Recommended next steps
-1. Implement **SHOT and CORAL** baselines (cheap on cached features) — closes the biggest gap.
-2. Real variance: resample data splits / bootstrap, then significance tests.
-3. A **second target dataset** (e.g. CWFID) to show the finding is not dataset-specific.
-4. Treat **open-set rejection** as the primary open problem — it is the binding constraint.
+## 6. Next steps
 
-## 4.6 Publication assessment
-This is a strong **application / benchmark** contribution, not a novel-method one. The
-"backbone > DA method" claim is already published elsewhere; our defensible nuance is that
-**adaptation and representation quality are complementary and super-additive**, plus a
-well-characterised set of failure modes. Realistic targets: *Computers and Electronics in
-Agriculture* or *Frontiers in Plant Science*, framed as **annotation-free deployment with a
-characterised open problem**.
+In order of priority: implement SHOT and CORAL as published baselines, which is cheap given the
+cached features; obtain a real variance estimate by resampling; add a second target dataset such
+as CWFID so the finding is not tied to DeepWeeds; and treat open-set rejection as the main open
+problem, since it is what actually blocks deployment.
 
----
+On publication, my assessment is that this is a solid application and benchmarking contribution
+rather than a novel method. The backbone-versus-method argument is already published elsewhere,
+and my defensible contribution is the interaction result — that adaptation and representation
+quality compound — together with a fairly thorough set of characterised failure modes.
+Computers and Electronics in Agriculture or Frontiers in Plant Science seem like the realistic
+targets, framed around annotation-free deployment with an honestly characterised open problem.
 
-# 5. Code map
+## Code
 
-| File | Purpose |
-|---|---|
-| `bench_common.py`, `bench_ml.py`, `bench_dl.py`, `bench_vlm.py` | 4-species tri-model benchmark |
-| `prep_common.py`, `prep_{clahe,fda,histmatch,reinhard}.py` | preprocessing techniques |
-| `adapt_{adabn,tent,ensemble,pseudolabel,fewshot}.py` | domain adaptation suite |
-| `novel_reliability.py`, `novel_method.py` | conformal cross-architecture selection |
-| `accuracy_push*.py` | DINOv2 + resolution scaling, 8-species, class-balance fix |
-| `qi_features.py`, `qi_factorial.py` | factorial study |
-| `realistic_deployment.py`, `realistic_eval.py`, `openset.py` | full realistic + open-set evaluation |
-
-Results: `results_bench/`, `results_prep/`, `results_adapt/`, `results_novel/`.
-Datasets, model weights and feature caches are git-ignored.
+The four-species comparison is in `bench_*.py`, preprocessing in `prep_*.py`, adaptation methods
+in `adapt_*.py`, the conformal selection rule in `novel_*.py`, the DINOv2 and resolution work in
+`accuracy_push*.py`, the factorial in `qi_*.py`, and the realistic and open-set evaluations in
+`realistic_*.py` and `openset.py`. Results are in the corresponding `results_*` directories.
+Datasets, model weights and feature caches are excluded from version control.
