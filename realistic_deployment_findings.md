@@ -87,3 +87,46 @@ dataset; transductive adaptation; no CV folds or significance testing.
 `realistic_deployment.py` (streaming feature extraction over all 17,509 images),
 `realistic_eval.py` (closed-set, prior estimation, open-set),
 results in `results_novel/realistic/realistic_results.json`.
+
+---
+
+# Open-set rejection benchmark (follow-up)
+
+Can the system reject the 9,106 unseen non-target images without ever seeing a negative in
+training? Eleven label-free scores compared. **FPR@95TPR** (negatives wrongly accepted while
+retaining 95% of true weeds) is the operationally meaningful metric.
+
+| Score | AUROC | AUPR | FPR@95TPR |
+|---|---|---|---|
+| **kNN (feature-space, k=10)** | **0.808** | 0.806 | **63.8%** |
+| Energy | 0.772 | 0.774 | 76.4% |
+| MaxLogit | 0.770 | 0.773 | 75.6% |
+| Mahalanobis | 0.769 | 0.768 | 76.3% |
+| fuse kNN+CLIPtext | 0.752 | 0.746 | 73.1% |
+| Entropy | 0.733 | 0.740 | 78.8% |
+| fuse kNN+CLIPtext+XArch | 0.728 | 0.733 | 82.2% |
+| MSP | 0.718 | 0.733 | 83.7% |
+| Relative Mahalanobis | 0.677 | 0.706 | 91.9% |
+| CLIP text-defined negatives | 0.634 | 0.599 | 85.3% |
+| Cross-architecture disagreement | 0.545 | 0.545 | 94.4% |
+
+## Findings
+1. **kNN is the only real improvement** (0.772 -> 0.808). Feature-space distance beats all
+   logit-based scores: the DINOv2 representation retains separation information that the
+   linear classifier head discards.
+2. **Language-defined negatives fail (0.634).** Describing non-target vegetation in text
+   ("grass", "bare soil", "native bushland") does not transfer to fine-grained Australian
+   rangeland, despite CLIP-based OOD detection working in other domains.
+3. **Cross-architecture disagreement is near chance (0.545).** Expert disagreement predicted
+   *classification errors* well (72.8% of errors fell in the disagreement set) but carries
+   almost no signal about *distribution membership*. These are different quantities.
+4. **Score fusion degrades the strongest score** (0.808 -> 0.752 -> 0.728). This is the third
+   independent instance in this project of the same effect: combining signals of unequal
+   quality hurts (cf. ensembling DINOv2 with weaker backbones, 88.2% -> 85.2%).
+5. **The task is not solved.** At 95% weed recall the best method still accepts 63.8% of
+   non-target vegetation. AUROC 0.81 is operationally unusable for a sprayer.
+
+## Conclusion for the paper
+Annotation-free transfer gives credible **closed-set** performance (80.1%), but **open-set
+rejection is the binding constraint** and remains open. Reporting AUROC alone would have
+hidden this; FPR@95TPR makes it explicit.
