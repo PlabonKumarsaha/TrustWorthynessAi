@@ -1,0 +1,431 @@
+{
+  "cells": {
+    "resnet50@224": {
+      "in_domain": 0.7937,
+      "none": {
+        "mean": 0.2975,
+        "std": 0.0
+      },
+      "DA": {
+        "mean": 0.3319,
+        "std": 0.0
+      },
+      "ST": {
+        "mean": 0.2906,
+        "std": 0.0
+      },
+      "CBST": {
+        "mean": 0.2975,
+        "std": 0.0
+      },
+      "DA+CBST": {
+        "mean": 0.36,
+        "std": 0.0
+      }
+    },
+    "resnet50@336": {
+      "in_domain": 0.8187,
+      "none": {
+        "mean": 0.3325,
+        "std": 0.0
+      },
+      "DA": {
+        "mean": 0.38,
+        "std": 0.0
+      },
+      "ST": {
+        "mean": 0.3256,
+        "std": 0.0
+      },
+      "CBST": {
+        "mean": 0.3387,
+        "std": 0.0
+      },
+      "DA+CBST": {
+        "mean": 0.4119,
+        "std": 0.0
+      }
+    },
+    "resnet50@448": {
+      "in_domain": 0.8396,
+      "none": {
+        "mean": 0.3762,
+        "std": 0.0
+      },
+      "DA": {
+        "mean": 0.4175,
+        "std": 0.0
+      },
+      "ST": {
+        "mean": 0.375,
+        "std": 0.0
+      },
+      "CBST": {
+        "mean": 0.3781,
+        "std": 0.0
+      },
+      "DA+CBST": {
+        "mean": 0.4562,
+        "std": 0.0
+      }
+    },
+    "clip_vitb32@224": {
+      "in_domain": 0.8583,
+      "none": {
+        "mean": 0.3425,
+        "std": 0.0
+      },
+      "DA": {
+        "mean": 0.3538,
+        "std": 0.0
+      },
+      "ST": {
+        "mean": 0.3281,
+        "std": 0.0
+      },
+      "CBST": {
+        "mean": 0.3563,
+        "std": 0.0
+      },
+      "DA+CBST": {
+        "mean": 0.3862,
+        "std": 0.0
+      }
+    },
+    "dinov2_vitb14@224": {
+      "in_domain": 0.9313,
+      "none": {
+        "mean": 0.5456,
+        "std": 0.0
+      },
+      "DA": {
+        "mean": 0.6419,
+        "std": 0.0
+      },
+      "ST": {
+        "mean": 0.56,
+        "std": 0.0
+      },
+      "CBST": {
+        "mean": 0.5563,
+        "std": 0.0
+      },
+      "DA+CBST": {
+        "mean": 0.7288,
+        "std": 0.0
+      }
+    },
+    "dinov2_vitb14@336": {
+      "in_domain": 0.9417,
+      "none": {
+        "mean": 0.5781,
+        "std": 0.0
+      },
+      "DA": {
+        "mean": 0.6906,
+        "std": 0.0
+      },
+      "ST": {
+        "mean": 0.6075,
+        "std": 0.0
+      },
+      "CBST": {
+        "mean": 0.6281,
+        "std": 0.0
+      },
+      "DA+CBST": {
+        "mean": 0.7981,
+        "std": 0.0
+      }
+    },
+    "dinov2_vitb14@448": {
+      "in_domain": 0.9521,
+      "none": {
+        "mean": 0.6381,
+        "std": 0.0
+      },
+      "DA": {
+        "mean": 0.7325,
+        "std": 0.0
+      },
+      "ST": {
+        "mean": 0.6881,
+        "std": 0.0
+      },
+      "CBST": {
+        "mean": 0.7181,
+        "std": 0.0
+      },
+      "DA+CBST": {
+        "mean": 0.8056,
+        "std": 0.0
+      }
+    }
+  },
+  "factor_spread": {
+    "backbone": 0.3077916666666668,
+    "resolution": 0.09756250000000005,
+    "adaptation_method": 0.11946428571428558
+  },
+  "rankings": {
+    "resnet50": [
+      "DA+CBST",
+      "DA",
+      "CBST",
+      "none",
+      "ST"
+    ],
+    "clip_vitb32": [
+      "DA+CBST",
+      "CBST",
+      "DA",
+      "none",
+      "ST"
+    ],
+    "dinov2_vitb14": [
+      "DA+CBST",
+      "DA",
+      "CBST",
+      "ST",
+      "none"
+    ]
+  },
+  "rank_correlation": {
+    "resnet50 vs clip_vitb32": 0.9,
+    "resnet50 vs dinov2_vitb14": 0.9,
+    "clip_vitb32 vs dinov2_vitb14": 0.8
+  },
+  "raw": [
+    {
+      "backbone": "resnet50",
+      "res": 224,
+      "seed": 0,
+      "in_domain": 0.79375,
+      "none": 0.2975,
+      "DA": 0.331875,
+      "ST": 0.290625,
+      "CBST": 0.2975,
+      "DA+CBST": 0.36
+    },
+    {
+      "backbone": "resnet50",
+      "res": 224,
+      "seed": 1,
+      "in_domain": 0.79375,
+      "none": 0.2975,
+      "DA": 0.331875,
+      "ST": 0.290625,
+      "CBST": 0.2975,
+      "DA+CBST": 0.36
+    },
+    {
+      "backbone": "resnet50",
+      "res": 224,
+      "seed": 2,
+      "in_domain": 0.79375,
+      "none": 0.2975,
+      "DA": 0.331875,
+      "ST": 0.290625,
+      "CBST": 0.2975,
+      "DA+CBST": 0.36
+    },
+    {
+      "backbone": "resnet50",
+      "res": 336,
+      "seed": 0,
+      "in_domain": 0.81875,
+      "none": 0.3325,
+      "DA": 0.38,
+      "ST": 0.325625,
+      "CBST": 0.33875,
+      "DA+CBST": 0.411875
+    },
+    {
+      "backbone": "resnet50",
+      "res": 336,
+      "seed": 1,
+      "in_domain": 0.81875,
+      "none": 0.3325,
+      "DA": 0.38,
+      "ST": 0.325625,
+      "CBST": 0.33875,
+      "DA+CBST": 0.411875
+    },
+    {
+      "backbone": "resnet50",
+      "res": 336,
+      "seed": 2,
+      "in_domain": 0.81875,
+      "none": 0.3325,
+      "DA": 0.38,
+      "ST": 0.325625,
+      "CBST": 0.33875,
+      "DA+CBST": 0.411875
+    },
+    {
+      "backbone": "resnet50",
+      "res": 448,
+      "seed": 0,
+      "in_domain": 0.8395833333333333,
+      "none": 0.37625,
+      "DA": 0.4175,
+      "ST": 0.375,
+      "CBST": 0.378125,
+      "DA+CBST": 0.45625
+    },
+    {
+      "backbone": "resnet50",
+      "res": 448,
+      "seed": 1,
+      "in_domain": 0.8395833333333333,
+      "none": 0.37625,
+      "DA": 0.4175,
+      "ST": 0.375,
+      "CBST": 0.378125,
+      "DA+CBST": 0.45625
+    },
+    {
+      "backbone": "resnet50",
+      "res": 448,
+      "seed": 2,
+      "in_domain": 0.8395833333333333,
+      "none": 0.37625,
+      "DA": 0.4175,
+      "ST": 0.375,
+      "CBST": 0.378125,
+      "DA+CBST": 0.45625
+    },
+    {
+      "backbone": "clip_vitb32",
+      "res": 224,
+      "seed": 0,
+      "in_domain": 0.8583333333333333,
+      "none": 0.3425,
+      "DA": 0.35375,
+      "ST": 0.328125,
+      "CBST": 0.35625,
+      "DA+CBST": 0.38625
+    },
+    {
+      "backbone": "clip_vitb32",
+      "res": 224,
+      "seed": 1,
+      "in_domain": 0.8583333333333333,
+      "none": 0.3425,
+      "DA": 0.35375,
+      "ST": 0.328125,
+      "CBST": 0.35625,
+      "DA+CBST": 0.38625
+    },
+    {
+      "backbone": "clip_vitb32",
+      "res": 224,
+      "seed": 2,
+      "in_domain": 0.8583333333333333,
+      "none": 0.3425,
+      "DA": 0.35375,
+      "ST": 0.328125,
+      "CBST": 0.35625,
+      "DA+CBST": 0.38625
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 224,
+      "seed": 0,
+      "in_domain": 0.93125,
+      "none": 0.545625,
+      "DA": 0.641875,
+      "ST": 0.56,
+      "CBST": 0.55625,
+      "DA+CBST": 0.72875
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 224,
+      "seed": 1,
+      "in_domain": 0.93125,
+      "none": 0.545625,
+      "DA": 0.641875,
+      "ST": 0.56,
+      "CBST": 0.55625,
+      "DA+CBST": 0.72875
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 224,
+      "seed": 2,
+      "in_domain": 0.93125,
+      "none": 0.545625,
+      "DA": 0.641875,
+      "ST": 0.56,
+      "CBST": 0.55625,
+      "DA+CBST": 0.72875
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 336,
+      "seed": 0,
+      "in_domain": 0.9416666666666667,
+      "none": 0.578125,
+      "DA": 0.690625,
+      "ST": 0.6075,
+      "CBST": 0.628125,
+      "DA+CBST": 0.798125
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 336,
+      "seed": 1,
+      "in_domain": 0.9416666666666667,
+      "none": 0.578125,
+      "DA": 0.690625,
+      "ST": 0.6075,
+      "CBST": 0.628125,
+      "DA+CBST": 0.798125
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 336,
+      "seed": 2,
+      "in_domain": 0.9416666666666667,
+      "none": 0.578125,
+      "DA": 0.690625,
+      "ST": 0.6075,
+      "CBST": 0.628125,
+      "DA+CBST": 0.798125
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 448,
+      "seed": 0,
+      "in_domain": 0.9520833333333333,
+      "none": 0.638125,
+      "DA": 0.7325,
+      "ST": 0.688125,
+      "CBST": 0.718125,
+      "DA+CBST": 0.805625
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 448,
+      "seed": 1,
+      "in_domain": 0.9520833333333333,
+      "none": 0.638125,
+      "DA": 0.7325,
+      "ST": 0.688125,
+      "CBST": 0.718125,
+      "DA+CBST": 0.805625
+    },
+    {
+      "backbone": "dinov2_vitb14",
+      "res": 448,
+      "seed": 2,
+      "in_domain": 0.9520833333333333,
+      "none": 0.638125,
+      "DA": 0.7325,
+      "ST": 0.688125,
+      "CBST": 0.718125,
+      "DA+CBST": 0.805625
+    }
+  ]
+}

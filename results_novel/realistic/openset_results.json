@@ -1,0 +1,57 @@
+{
+  "kNN": {
+    "auroc": 0.8078,
+    "aupr": 0.8064,
+    "fpr95": 0.6385
+  },
+  "Energy": {
+    "auroc": 0.7717,
+    "aupr": 0.7742,
+    "fpr95": 0.7642
+  },
+  "MaxLogit": {
+    "auroc": 0.7704,
+    "aupr": 0.7729,
+    "fpr95": 0.7562
+  },
+  "Mahalanobis": {
+    "auroc": 0.7694,
+    "aupr": 0.7685,
+    "fpr95": 0.7629
+  },
+  "fuse kNN+CLIPtext": {
+    "auroc": 0.7516,
+    "aupr": 0.7456,
+    "fpr95": 0.7308
+  },
+  "Entropy": {
+    "auroc": 0.7332,
+    "aupr": 0.7404,
+    "fpr95": 0.7881
+  },
+  "fuse kNN+CLIPtext+XArch": {
+    "auroc": 0.7281,
+    "aupr": 0.7326,
+    "fpr95": 0.8217
+  },
+  "MSP": {
+    "auroc": 0.7179,
+    "aupr": 0.7333,
+    "fpr95": 0.8375
+  },
+  "RelMahalanobis": {
+    "auroc": 0.6771,
+    "aupr": 0.7063,
+    "fpr95": 0.9192
+  },
+  "CLIP-text-neg": {
+    "auroc": 0.6338,
+    "aupr": 0.5988,
+    "fpr95": 0.8531
+  },
+  "XArch-agree": {
+    "auroc": 0.5447,
+    "aupr": 0.5454,
+    "fpr95": 0.9438
+  }
+}

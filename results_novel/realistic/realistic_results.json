@@ -1,0 +1,48 @@
+{
+  "closed_none": {
+    "acc": 0.6489,
+    "macro_f1": 0.6532
+  },
+  "prior_estimation": {
+    "true": [
+      0.1339,
+      0.1266,
+      0.1227,
+      0.1216,
+      0.1264,
+      0.1201,
+      0.1278,
+      0.1209
+    ],
+    "estimated": [
+      0.1057,
+      0.0734,
+      0.0744,
+      0.267,
+      0.0389,
+      0.0997,
+      0.0772,
+      0.2637
+    ],
+    "L1_error": 0.5765
+  },
+  "closed_DA_uniform": {
+    "acc": 0.7291,
+    "macro_f1": 0.7297
+  },
+  "closed_DA_estimated": {
+    "acc": 0.6125,
+    "macro_f1": 0.6125
+  },
+  "closed_DA_oracle": {
+    "acc": 0.7316,
+    "macro_f1": 0.7321
+  },
+  "closed_DA+CBST_estimated": {
+    "acc": 0.6373,
+    "macro_f1": 0.6424
+  },
+  "openset_auroc_MSP": 0.7179,
+  "openset_auroc_energy": 0.7717,
+  "openset_auroc_mahalanobis": 0.7694
+}
