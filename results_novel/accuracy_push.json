@@ -1,0 +1,50 @@
+{
+  "DINOv2-224": {
+    "in_domain_gbif": {
+      "acc": 0.9917,
+      "macro_f1": 0.9917
+    },
+    "deepweeds": {
+      "acc": 0.7817,
+      "macro_f1": 0.7828
+    }
+  },
+  "DINOv2-336": {
+    "in_domain_gbif": {
+      "acc": 0.9958,
+      "macro_f1": 0.9958
+    },
+    "deepweeds": {
+      "acc": 0.8825,
+      "macro_f1": 0.8811
+    }
+  },
+  "ens::ResNet": {
+    "acc": 0.6658,
+    "macro_f1": 0.6739
+  },
+  "ens::CLIP": {
+    "acc": 0.6717,
+    "macro_f1": 0.6684
+  },
+  "ens::DINOv2-336": {
+    "acc": 0.8825,
+    "macro_f1": 0.8811
+  },
+  "ens::ResNet+CLIP": {
+    "acc": 0.7333,
+    "macro_f1": 0.7301
+  },
+  "ens::DINOv2-336+CLIP": {
+    "acc": 0.8675,
+    "macro_f1": 0.8646
+  },
+  "ens::DINOv2-336+ResNet": {
+    "acc": 0.8617,
+    "macro_f1": 0.8621
+  },
+  "ens::DINOv2-336+ResNet+CLIP": {
+    "acc": 0.8525,
+    "macro_f1": 0.851
+  }
+}

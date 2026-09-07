@@ -1,0 +1,30 @@
+{
+  "DINOv2-336": {
+    "acc": 0.8825,
+    "macro_f1": 0.8811
+  },
+  "DINOv2-448": {
+    "acc": 0.9075,
+    "macro_f1": 0.9059
+  },
+  "DINOv2-multires-concat": {
+    "acc": 0.8883,
+    "macro_f1": 0.887
+  },
+  "DINOv2-multires-probavg": {
+    "acc": 0.9008,
+    "macro_f1": 0.8992
+  },
+  "DINOv2-448-selftrain-r1": {
+    "acc": 0.9333,
+    "macro_f1": 0.9329
+  },
+  "DINOv2-448-selftrain-r2": {
+    "acc": 0.9375,
+    "macro_f1": 0.9372
+  },
+  "DINOv2-448-selftrain-r3": {
+    "acc": 0.9417,
+    "macro_f1": 0.9415
+  }
+}
