@@ -261,6 +261,39 @@ adds 6.2 points on ResNet-50 at 224 but 16.8 points on DINOv2 at 448. Backbone q
 adaptation are complementary rather than substitutes, which is a more specific claim than the
 2025 papers arguing that foundation models should replace adaptation methods.
 
+### Comparing against published baselines
+
+Late in the project I implemented CORAL, DANN and SHOT on the same frozen DINOv2 features and
+scored them on the same full natural weed set, so the comparison is like for like. Since SHOT and
+DANN need a trainable feature transform, I also trained a source-only model with the identical
+MLP architecture, otherwise their gains would be confounded with the extra capacity.
+
+| Method | Accuracy | macro-F1 |
+|---|---|---|
+| SHOT | 85.7% | 0.860 |
+| DA + CBST (mine) | 79.9% | 0.799 |
+| DA only (mine) | 72.9% | 0.730 |
+| source-only, MLP (matched architecture) | 67.4% | 0.677 |
+| source-only, linear probe | 64.9% | 0.653 |
+| DANN | 63.9% | 0.633 |
+| CORAL | 52.6% | 0.520 |
+
+SHOT beats my approach by 5.8 points, and the matched-architecture control shows this is not a
+capacity effect: SHOT gains 18.3 points over its own source-only baseline, against 15.0 for my
+DA plus class-balanced self-training over the linear probe. Its adaptation is simply better. I
+had expected it to be competitive and it was, which is the main reason for running the comparison
+rather than assuming.
+
+Two of the three baselines were worse than doing nothing. DANN came in below its own source-only
+model, which I attribute to adversarial training being unstable with only 2,240 source samples.
+CORAL was worst by a wide margin, and that is unsurprising in hindsight: whiten-and-recolour
+requires estimating a 768 by 768 covariance matrix from 2,240 points, which is badly conditioned.
+
+There is a secondary observation here that supports the factorial result. SHOT was developed and
+evaluated on ResNet-era backbones, and applying it to DINOv2 features yields a larger absolute
+gain than it reports on its original benchmarks. That is independent corroboration, from a method
+I did not design, that adaptation and representation quality compound.
+
 ### Testing it under realistic conditions
 
 Everything up to this point used balanced subsets with the negative class removed. Both of those
@@ -313,10 +346,11 @@ useless for a sprayer.
 
 ## 4. Where things stand
 
-Training only on free GBIF imagery, with no Australian labels at all, the system reaches 80.1%
-accuracy and 0.801 macro-F1 on the full DeepWeeds weed set, up from 64.9% unadapted and from
-11.7% for zero-shot CLIP at the start of the project. The fully supervised in-domain reference
-is 95.7%.
+Training only on free GBIF imagery, with no Australian labels at all, the best configuration
+reaches 85.7% accuracy and 0.860 macro-F1 on the full DeepWeeds weed set. That configuration is
+SHOT applied to frozen DINOv2 features, not my own method, which reaches 79.9%. Both are well
+above the 64.9% unadapted probe and the 11.7% zero-shot CLIP result I started with. The fully
+supervised in-domain reference is 95.7%, so roughly ten points of gap remain.
 
 The findings I am reasonably confident in are these. Backbone choice dominates everything else,
 and was worth more than all the adaptation methods combined. Input resolution is a first-class
@@ -335,9 +369,11 @@ And combining signals of unequal quality has hurt every time I have tried it.
 
 ## 5. Limitations
 
-The most significant gap is that I have not implemented any published baseline — no SHOT, CORAL
-or DANN — so all comparisons are between my own variants. For a methods claim that is
-disqualifying, and it is the first thing I should fix.
+The published baselines are now implemented, and the outcome is that my own combination of
+distribution alignment and class-balanced self-training is not competitive: SHOT beats it by 5.8
+points on identical features. I therefore cannot present the method as a contribution, and the
+value of the work lies in the empirical study and the characterised failure modes rather than in
+a new algorithm.
 
 I also need to be careful about the word "seeds". The factorial ran three seeds per cell but the
 standard deviations came out as exactly zero, because a linear probe with fixed data and a
@@ -354,15 +390,19 @@ folds or significance tests; and snake weed is matched only at genus level.
 
 ## 6. Next steps
 
-In order of priority: implement SHOT and CORAL as published baselines, which is cheap given the
-cached features; obtain a real variance estimate by resampling; add a second target dataset such
-as CWFID so the finding is not tied to DeepWeeds; and treat open-set rejection as the main open
-problem, since it is what actually blocks deployment.
+In order of priority: obtain a real variance estimate by resampling the splits; add a second
+target dataset such as CWFID so the findings are not tied to DeepWeeds; check whether SHOT and my
+alignment approach are complementary, since SHOT does not use an explicit class-prior correction
+and the sink-class problem may still be present in its output; and treat open-set rejection as the
+main open problem, since it is what actually blocks deployment.
 
-On publication, my assessment is that this is a solid application and benchmarking contribution
-rather than a novel method. The backbone-versus-method argument is already published elsewhere,
-and my defensible contribution is the interaction result — that adaptation and representation
-quality compound — together with a fairly thorough set of characterised failure modes.
+On publication, my assessment is that this is an application and benchmarking contribution
+rather than a novel method, and the baseline comparison confirms that: SHOT outperforms what I
+built. The backbone-versus-method argument is already published elsewhere. What remains defensible
+is the interaction result, that adaptation and representation quality compound, which is now
+supported by SHOT's behaviour as well as my own; the demonstration that annotation-free transfer
+from web imagery reaches 85.7% on real field data; and a fairly thorough set of characterised
+failure modes.
 Computers and Electronics in Agriculture or Frontiers in Plant Science seem like the realistic
 targets, framed around annotation-free deployment with an honestly characterised open problem.
 
