@@ -1,0 +1,30 @@
+{
+  "source-only (linear)": {
+    "acc": 0.6489,
+    "macro_f1": 0.6532
+  },
+  "CORAL": {
+    "acc": 0.526,
+    "macro_f1": 0.5204
+  },
+  "source-only (MLP, matched arch)": {
+    "acc": 0.6739,
+    "macro_f1": 0.6767
+  },
+  "DANN": {
+    "acc": 0.6391,
+    "macro_f1": 0.6328
+  },
+  "SHOT": {
+    "acc": 0.8574,
+    "macro_f1": 0.86
+  },
+  "ours: DA": {
+    "acc": 0.7291,
+    "macro_f1": 0.7297
+  },
+  "ours: DA+CBST": {
+    "acc": 0.7994,
+    "macro_f1": 0.7994
+  }
+}
