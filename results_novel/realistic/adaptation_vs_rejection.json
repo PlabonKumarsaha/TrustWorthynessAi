@@ -1,0 +1,77 @@
+{
+  "A_source_only": {
+    "closed_set_acc": 0.6739,
+    "MSP": {
+      "auroc": 0.7296,
+      "fpr95": 0.8168
+    },
+    "energy": {
+      "auroc": 0.7513,
+      "fpr95": 0.744
+    },
+    "neg-entropy": {
+      "auroc": 0.7391,
+      "fpr95": 0.7875
+    },
+    "kNN": {
+      "auroc": 0.7827,
+      "fpr95": 0.7214
+    },
+    "Mahalanobis": {
+      "auroc": 0.8301,
+      "fpr95": 0.6748
+    },
+    "mean_conf_on_negatives": 0.7153,
+    "mean_conf_on_weeds": 0.8674
+  },
+  "B_shot_weeds_only": {
+    "closed_set_acc": 0.8495,
+    "MSP": {
+      "auroc": 0.8449,
+      "fpr95": 0.3586
+    },
+    "energy": {
+      "auroc": 0.8123,
+      "fpr95": 0.4348
+    },
+    "neg-entropy": {
+      "auroc": 0.8439,
+      "fpr95": 0.359
+    },
+    "kNN": {
+      "auroc": 0.799,
+      "fpr95": 0.6177
+    },
+    "Mahalanobis": {
+      "auroc": 0.7819,
+      "fpr95": 0.8281
+    },
+    "mean_conf_on_negatives": 0.913,
+    "mean_conf_on_weeds": 0.9995
+  },
+  "C_shot_full_stream": {
+    "closed_set_acc": 0.7316,
+    "MSP": {
+      "auroc": 0.5563,
+      "fpr95": 0.9169
+    },
+    "energy": {
+      "auroc": 0.5155,
+      "fpr95": 0.9195
+    },
+    "neg-entropy": {
+      "auroc": 0.5451,
+      "fpr95": 0.9171
+    },
+    "kNN": {
+      "auroc": 0.6743,
+      "fpr95": 0.8866
+    },
+    "Mahalanobis": {
+      "auroc": 0.7734,
+      "fpr95": 0.7687
+    },
+    "mean_conf_on_negatives": 0.9951,
+    "mean_conf_on_weeds": 0.9967
+  }
+}

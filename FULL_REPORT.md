@@ -485,3 +485,45 @@ The four-species comparison is in `bench_*.py`, preprocessing in `prep_*.py`, ad
 `realistic_*.py` and `openset.py`, and the published baselines in `baselines.py`. Results are in
 the corresponding `results_*` directories. Datasets, model weights and feature caches are excluded
 from version control.
+
+---
+
+## Appendix: adaptation on a contaminated target stream
+
+Every adaptation result above assumes the unlabelled target stream contains only the eight weed
+classes. A deployed system does not get that: over half of DeepWeeds is non-target vegetation. I
+therefore repeated SHOT adaptation while varying how much of the unlabelled stream is
+out-of-distribution, from 0% up to the natural 52%, evaluating throughout on the full 17,509
+images. Three seeds per point, which is also the only genuine variance estimate in this project.
+
+| Contamination | Closed-set | MSP | Energy | kNN | Mahalanobis | Confidence on negatives |
+|---|---|---|---|---|---|---|
+| 0% | 84.3 ± 0.2 | 0.830 ± 0.016 | 0.800 ± 0.014 | 0.810 ± 0.021 | 0.788 ± 0.023 | 0.925 |
+| 10% | 82.7 ± 0.7 | 0.672 ± 0.018 | 0.610 ± 0.024 | 0.704 ± 0.024 | 0.804 ± 0.045 | 0.961 |
+| 20% | 80.9 ± 1.8 | 0.640 ± 0.016 | 0.583 ± 0.016 | 0.731 ± 0.029 | 0.799 ± 0.039 | 0.969 |
+| 30% | 78.0 ± 2.2 | 0.600 ± 0.017 | 0.540 ± 0.019 | 0.672 ± 0.032 | 0.781 ± 0.023 | 0.979 |
+| 40% | 76.1 ± 2.3 | 0.578 ± 0.007 | 0.520 ± 0.015 | 0.665 ± 0.032 | 0.794 ± 0.013 | 0.987 |
+| 52% (natural) | 71.8 ± 3.6 | 0.559 ± 0.014 | 0.514 ± 0.012 | 0.650 ± 0.017 | 0.775 ± 0.005 | 0.996 |
+
+The mechanism is straightforward. SHOT minimises prediction entropy over every image in the
+adaptation stream, so any out-of-distribution image in that stream is explicitly trained toward a
+confident assignment to one of the eight weed classes. Mean confidence on negatives rises
+monotonically from 0.925 to 0.996, at which point it is indistinguishable from the 0.997 the model
+assigns to real weeds, and the separation that rejection depends on has been erased.
+
+Four observations. The cliff arrives early: most of the damage is done by 10% contamination, where
+max-softmax AUROC has already fallen from 0.830 to 0.672, so this is not a gradual trade-off that
+can be budgeted for. Rejection is much more fragile than classification, degrading to chance while
+closed-set accuracy falls only gracefully. Feature-space Mahalanobis is almost unaffected across
+the whole range, 0.788 to 0.775, while logit-based scores collapse — so if adaptation must run on a
+real stream, rejection should be computed from feature geometry rather than classifier outputs.
+And contamination destabilises adaptation, with the closed-set standard deviation growing from
+±0.2 to ±3.6.
+
+This is a characterisation rather than a discovery. The underlying phenomenon is established in
+the test-time adaptation literature: SoTTA (NeurIPS 2023) reports comparable collapses on noisy
+streams, and work on the ID–OOD trade-off in open-set test-time adaptation analyses the conflict
+between entropy minimisation and OOD detection directly. There is an active subfield around
+open-world and open-set test-time adaptation. What the table adds is the magnitude of the effect
+in the web-to-field agricultural setting, the location of the cliff, and the finding that the
+choice of rejection score determines whether the failure occurs at all.
