@@ -1,0 +1,28 @@
+{
+  "backbone": "regnet_y_32gf",
+  "best_epoch": 9,
+  "best_val_loss": 0.3906,
+  "feat_dim": 3712,
+  "gbif_test": {
+    "acc": 0.8609,
+    "macro_f1": 0.8575,
+    "bal_acc": 0.8609
+  },
+  "deepweeds": {
+    "acc": 0.4058,
+    "macro_f1": 0.4038,
+    "bal_acc": 0.4088
+  },
+  "seconds": 5690.9,
+  "classes": [
+    "chinee_apple",
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "prickly_acacia",
+    "rubber_vine",
+    "siam_weed",
+    "snake_weed"
+  ],
+  "gap_acc": 0.4551
+}

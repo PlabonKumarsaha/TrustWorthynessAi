@@ -1,6 +1,7 @@
 # ---- Datasets (never push raw or processed imagery) ----
 weeds/
 *.npy
+*.npz
 tensorflow_datasets/
 
 # ---- Virtual environment ----

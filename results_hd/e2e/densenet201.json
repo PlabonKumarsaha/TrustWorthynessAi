@@ -1,0 +1,28 @@
+{
+  "backbone": "densenet201",
+  "best_epoch": 8,
+  "best_val_loss": 0.3757,
+  "feat_dim": 1920,
+  "gbif_test": {
+    "acc": 0.8641,
+    "macro_f1": 0.8638,
+    "bal_acc": 0.8641
+  },
+  "deepweeds": {
+    "acc": 0.3988,
+    "macro_f1": 0.3899,
+    "bal_acc": 0.3973
+  },
+  "seconds": 58202.7,
+  "classes": [
+    "chinee_apple",
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "prickly_acacia",
+    "rubber_vine",
+    "siam_weed",
+    "snake_weed"
+  ],
+  "gap_acc": 0.4653
+}

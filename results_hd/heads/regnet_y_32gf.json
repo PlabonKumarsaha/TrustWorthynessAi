@@ -1,0 +1,158 @@
+{
+  "SVM": {
+    "gbif_test": {
+      "acc": 0.8812,
+      "macro_f1": 0.8802,
+      "bal_acc": 0.8812
+    },
+    "deepweeds": {
+      "acc": 0.457,
+      "macro_f1": 0.4577,
+      "bal_acc": 0.4588
+    },
+    "seconds": 3.9
+  },
+  "LR": {
+    "gbif_test": {
+      "acc": 0.8781,
+      "macro_f1": 0.8768,
+      "bal_acc": 0.8781
+    },
+    "deepweeds": {
+      "acc": 0.4464,
+      "macro_f1": 0.44,
+      "bal_acc": 0.4492
+    },
+    "seconds": 0.3
+  },
+  "HGB": {
+    "gbif_test": {
+      "acc": 0.8656,
+      "macro_f1": 0.8633,
+      "bal_acc": 0.8656
+    },
+    "deepweeds": {
+      "acc": 0.4039,
+      "macro_f1": 0.3928,
+      "bal_acc": 0.4072
+    },
+    "seconds": 27.0
+  },
+  "kNN": {
+    "gbif_test": {
+      "acc": 0.8656,
+      "macro_f1": 0.8639,
+      "bal_acc": 0.8656
+    },
+    "deepweeds": {
+      "acc": 0.414,
+      "macro_f1": 0.4133,
+      "bal_acc": 0.4172
+    },
+    "seconds": 0.7
+  },
+  "RF": {
+    "gbif_test": {
+      "acc": 0.8734,
+      "macro_f1": 0.8723,
+      "bal_acc": 0.8734
+    },
+    "deepweeds": {
+      "acc": 0.4133,
+      "macro_f1": 0.4136,
+      "bal_acc": 0.4168
+    },
+    "seconds": 0.5
+  },
+  "XGBoost": {
+    "gbif_test": {
+      "acc": 0.8625,
+      "macro_f1": 0.8602,
+      "bal_acc": 0.8625
+    },
+    "deepweeds": {
+      "acc": 0.3947,
+      "macro_f1": 0.3775,
+      "bal_acc": 0.3985
+    },
+    "seconds": 10.0
+  },
+  "LDA": {
+    "gbif_test": {
+      "acc": 0.8453,
+      "macro_f1": 0.8445,
+      "bal_acc": 0.8453
+    },
+    "deepweeds": {
+      "acc": 0.3295,
+      "macro_f1": 0.3338,
+      "bal_acc": 0.328
+    },
+    "seconds": 1.6
+  },
+  "Bagging": {
+    "gbif_test": {
+      "acc": 0.8578,
+      "macro_f1": 0.856,
+      "bal_acc": 0.8578
+    },
+    "deepweeds": {
+      "acc": 0.4018,
+      "macro_f1": 0.4079,
+      "bal_acc": 0.4044
+    },
+    "seconds": 4.0
+  },
+  "GradBoost": {
+    "gbif_test": {
+      "acc": 0.8516,
+      "macro_f1": 0.851,
+      "bal_acc": 0.8516
+    },
+    "deepweeds": {
+      "acc": 0.3883,
+      "macro_f1": 0.3871,
+      "bal_acc": 0.3894
+    },
+    "seconds": 937.5
+  },
+  "AdaBoost": {
+    "gbif_test": {
+      "acc": 0.8047,
+      "macro_f1": 0.8068,
+      "bal_acc": 0.8047
+    },
+    "deepweeds": {
+      "acc": 0.2375,
+      "macro_f1": 0.22,
+      "bal_acc": 0.2414
+    },
+    "seconds": 23.0
+  },
+  "DT": {
+    "gbif_test": {
+      "acc": 0.8219,
+      "macro_f1": 0.819,
+      "bal_acc": 0.8219
+    },
+    "deepweeds": {
+      "acc": 0.3519,
+      "macro_f1": 0.3405,
+      "bal_acc": 0.3561
+    },
+    "seconds": 2.2
+  },
+  "NB": {
+    "gbif_test": {
+      "acc": 0.8719,
+      "macro_f1": 0.8701,
+      "bal_acc": 0.8719
+    },
+    "deepweeds": {
+      "acc": 0.3956,
+      "macro_f1": 0.3858,
+      "bal_acc": 0.3988
+    },
+    "seconds": 0.5
+  }
+}
