@@ -1,0 +1,28 @@
+{
+  "backbone": "vgg19",
+  "best_epoch": 15,
+  "best_val_loss": 0.5681,
+  "feat_dim": 4096,
+  "gbif_test": {
+    "acc": 0.8219,
+    "macro_f1": 0.8191,
+    "bal_acc": 0.8219
+  },
+  "deepweeds": {
+    "acc": 0.3561,
+    "macro_f1": 0.3432,
+    "bal_acc": 0.3571
+  },
+  "seconds": 2277.8,
+  "classes": [
+    "chinee_apple",
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "prickly_acacia",
+    "rubber_vine",
+    "siam_weed",
+    "snake_weed"
+  ],
+  "gap_acc": 0.4658
+}

@@ -1,0 +1,28 @@
+{
+  "backbone": "mobilenet_v2",
+  "best_epoch": 13,
+  "best_val_loss": 0.5044,
+  "feat_dim": 1280,
+  "gbif_test": {
+    "acc": 0.8359,
+    "macro_f1": 0.8335,
+    "bal_acc": 0.8359
+  },
+  "deepweeds": {
+    "acc": 0.3565,
+    "macro_f1": 0.3574,
+    "bal_acc": 0.3569
+  },
+  "seconds": 481.1,
+  "classes": [
+    "chinee_apple",
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "prickly_acacia",
+    "rubber_vine",
+    "siam_weed",
+    "snake_weed"
+  ],
+  "gap_acc": 0.4794
+}
