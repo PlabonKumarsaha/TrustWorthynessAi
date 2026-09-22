@@ -45,17 +45,18 @@ def run(name):
     if not os.path.exists(feat_path): print(f"[{name}] no features yet, skipping"); return
     if os.path.exists(out_path): print(f"[{name}] heads already done, skipping"); return
     d = np.load(feat_path)
-    Xtr, Xte, Xdw = (d[k].astype(np.float32) for k in ("Xtr", "Xte", "Xdw"))
-    ytr, yte, ydw = d["ytr"], d["yte"], d["ydw"]
+    sh_key = "Xsh" if "Xsh" in d else "Xdw"        # older forward-direction caches used Xdw
+    Xtr, Xte, Xsh = (d[k].astype(np.float32) for k in ("Xtr", "Xte", sh_key))
+    ytr, yte, ysh = d["ytr"], d["yte"], d["ysh" if "ysh" in d else "ydw"]
     res = {}
     for hn, mk in HEADS.items():
         t0 = time.time()
         clf = make_pipeline(StandardScaler(), mk()).fit(Xtr, ytr)
-        res[hn] = dict(gbif_test=metrics(yte, clf.predict(Xte)),
-                       deepweeds=metrics(ydw, clf.predict(Xdw)),
+        res[hn] = dict(in_domain=metrics(yte, clf.predict(Xte)),
+                       shift=metrics(ysh, clf.predict(Xsh)),
                        seconds=round(time.time() - t0, 1))
-        print(f"  [{name}] {hn:9s} GBIF={res[hn]['gbif_test']['acc']:.4f}  "
-              f"DeepWeeds={res[hn]['deepweeds']['acc']:.4f}  ({res[hn]['seconds']}s)", flush=True)
+        print(f"  [{name}] {hn:9s} in-domain={res[hn]['in_domain']['acc']:.4f}  "
+              f"shift={res[hn]['shift']['acc']:.4f}  ({res[hn]['seconds']}s)", flush=True)
     os.makedirs(f"{OUT}/heads", exist_ok=True)
     json.dump(res, open(out_path, "w"), indent=2)
 

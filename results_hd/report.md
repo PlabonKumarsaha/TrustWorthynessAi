@@ -1,6 +1,6 @@
-# HD(LM)²D replication on GBIF → DeepWeeds
+# HD(LM)²D replication: train on GBIF → shift-test on DeepWeeds
 
-Backbones complete: 6/6 (mobilenet_v2, resnet50, densenet201, vgg16, vgg19, regnet_y_32gf). 8 classes, chance 12.5%. GBIF test n=640, DeepWeeds n=8,403.
+Direction: `gbif2dw`. Backbones complete: 6/6 (mobilenet_v2, resnet50, densenet201, vgg16, vgg19, regnet_y_32gf). 8 classes, chance 12.5%.
 
 ## 1. End-to-end fine-tuned models (paper Tables 7–9)
 

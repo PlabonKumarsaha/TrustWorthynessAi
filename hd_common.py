@@ -20,7 +20,10 @@ CLASSES = ["chinee_apple", "lantana", "parkinsonia", "parthenium",
 NUM = len(CLASSES)
 DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 MEAN, STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
-GBIF_DIR, DW_DIR, OUT = "weeds/global_raw", "weeds/dw8", "results_hd"
+GBIF_DIR, DW_DIR = "weeds/global_raw", "weeds/dw8"
+# HD_DIRECTION=gbif2dw (default) trains on GBIF and shift-tests on DeepWeeds; dw2gbif is the reverse.
+DIRECTION = os.environ.get("HD_DIRECTION", "gbif2dw")
+OUT = {"gbif2dw": "results_hd", "dw2gbif": "results_hd_rev"}[DIRECTION]
 
 # cheapest first, so partial results arrive early
 BACKBONES = ["mobilenet_v2", "resnet50", "densenet201", "vgg16", "vgg19", "regnet_y_32gf"]
@@ -62,9 +65,9 @@ def list_dir(root):
             fs.append(fp); ys.append(ci)
     return np.array(fs), np.array(ys)
 
-def gbif_splits(seed=42, frac=(0.6, 0.2, 0.2)):
-    """Paper-faithful stratified 60/20/20 -> 240/80/80 per class."""
-    fs, ys = list_dir(GBIF_DIR); rng = np.random.default_rng(seed)
+def _stratified(root, seed=42, frac=(0.6, 0.2, 0.2)):
+    """Paper-faithful stratified 60/20/20 split over an image-folder tree."""
+    fs, ys = list_dir(root); rng = np.random.default_rng(seed)
     parts = ([], [], [])
     for c in range(NUM):
         idx = np.where(ys == c)[0]; rng.shuffle(idx)
@@ -72,8 +75,20 @@ def gbif_splits(seed=42, frac=(0.6, 0.2, 0.2)):
         for p, sl in zip(parts, (idx[:a], idx[a:b], idx[b:])): p.extend(sl)
     return [(fs[np.array(p)], ys[np.array(p)]) for p in parts]
 
-def deepweeds_all():
-    return list_dir(DW_DIR)
+def gbif_splits(seed=42, frac=(0.6, 0.2, 0.2)):   # 240/80/80 per class
+    return _stratified(GBIF_DIR, seed, frac)
+
+def deepweeds_splits(seed=42, frac=(0.6, 0.2, 0.2)):   # ~5,039/1,677/1,687
+    return _stratified(DW_DIR, seed, frac)
+
+def deepweeds_all(): return list_dir(DW_DIR)
+def gbif_all():      return list_dir(GBIF_DIR)
+
+def splits():
+    """(train, val, in-domain test, shift test, in-domain name, shift name) for DIRECTION."""
+    if DIRECTION == "gbif2dw":
+        tr, va, te = gbif_splits();      return tr, va, te, deepweeds_all(), "GBIF", "DeepWeeds"
+    tr, va, te = deepweeds_splits();     return tr, va, te, gbif_all(),      "DeepWeeds", "GBIF"
 
 def build(name, p_drop=0.5):
     """ImageNet backbone with its final layer replaced by the paper's head: dropout -> dense(8).
