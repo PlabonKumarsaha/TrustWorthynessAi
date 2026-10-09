@@ -1,0 +1,92 @@
+{
+  "distance_to_deepweeds": {
+    "resnet50/GBIF-400": {
+      "frechet": 94.18425413323867,
+      "mmd2": 0.08575645834207535,
+      "mmd2_sd": 0.0017053908668458462,
+      "domain_acc": 0.9928333333333332,
+      "a_distance": 1.971333333333333
+    },
+    "resnet50/GBIF-649": {
+      "frechet": 188.9604467414701,
+      "mmd2": 0.22490182518959045,
+      "mmd2_sd": 0.0027662208303809166,
+      "domain_acc": 0.9966666666666665,
+      "a_distance": 1.986666666666666
+    },
+    "dinov2/GBIF-400": {
+      "frechet": 1277.2769047281286,
+      "mmd2": 0.09449683129787445,
+      "mmd2_sd": 0.001259379554539919,
+      "domain_acc": 0.9941666666666666,
+      "a_distance": 1.9766666666666666
+    },
+    "dinov2/GBIF-649": {
+      "frechet": 1496.842599165535,
+      "mmd2": 0.14069542288780212,
+      "mmd2_sd": 0.0020025314297527075,
+      "domain_acc": 0.9978333333333333,
+      "a_distance": 1.9913333333333334
+    }
+  },
+  "diversity": {
+    "resnet50/GBIF-400": 0.6483791470527649,
+    "resnet50/GBIF-649": 0.6685279607772827,
+    "resnet50/DeepWeeds": 0.5426341891288757,
+    "dinov2/GBIF-400": 0.891318142414093,
+    "dinov2/GBIF-649": 0.795470118522644,
+    "dinov2/DeepWeeds": 0.6873106956481934
+  },
+  "gbif_old_vs_new": {
+    "resnet50": {
+      "mmd2": 0.14847490191459656,
+      "domain_acc": 0.9631666666666666
+    },
+    "dinov2": {
+      "mmd2": 0.061878301203250885,
+      "domain_acc": 0.9571666666666667
+    }
+  },
+  "herbarium": {
+    "new_true_share": 0.6134437596302003,
+    "basis_counts": {
+      "HUMAN_OBSERVATION": 1975,
+      "LIVING_SPECIMEN": 1,
+      "MACHINE_OBSERVATION": 8,
+      "MATERIAL_SAMPLE": 15,
+      "OCCURRENCE": 8,
+      "PRESERVED_SPECIMEN": 3185
+    },
+    "clip_detector_accuracy": 0.976502311248074,
+    "clip_detector_recall": 0.9959183673469387,
+    "clip_detector_precision": 0.9667784212130448,
+    "clip_est_share_new": 0.6319337442218799,
+    "clip_est_share_old": 0.04125,
+    "resnet50/mmd2_herbarium_vs_DW": 0.4388276934623718,
+    "resnet50/mmd2_living_vs_DW": 0.10046200454235077,
+    "dinov2/mmd2_herbarium_vs_DW": 0.22614741325378418,
+    "dinov2/mmd2_living_vs_DW": 0.11026979982852936
+  },
+  "leakage_test_has_train_neardup": {
+    "GBIF-400": {
+      ">0.9": 0.1296875,
+      ">0.95": 0.1078125,
+      ">0.98": 0.1
+    },
+    "GBIF-649": {
+      ">0.9": 0.011450381679389313,
+      ">0.95": 0.0057251908396946565,
+      ">0.98": 0.0057251908396946565
+    },
+    "DeepWeeds": {
+      ">0.9": 0.03141671606401897,
+      ">0.95": 0.0017783046828689982,
+      ">0.98": 0.0005927682276229994
+    }
+  },
+  "new_images_with_neardup_in_old": {
+    ">0.95": 0.042180277349768876,
+    ">0.98": 0.0061633281972265025
+  },
+  "seconds": 874.1
+}
