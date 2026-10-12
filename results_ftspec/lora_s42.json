@@ -1,0 +1,28 @@
+{
+  "backbone": "resnet50",
+  "method": "lora",
+  "seed": 42,
+  "best_epoch": 19,
+  "trainable_params": 1192968,
+  "in_domain": {
+    "acc": 0.8562,
+    "macro_f1": 0.8552,
+    "bal_acc": 0.8562
+  },
+  "shift": {
+    "acc": 0.3459,
+    "macro_f1": 0.3392,
+    "bal_acc": 0.3474
+  },
+  "seconds": 1433.1,
+  "classes": [
+    "chinee_apple",
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "prickly_acacia",
+    "rubber_vine",
+    "siam_weed",
+    "snake_weed"
+  ]
+}
