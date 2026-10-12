@@ -1,0 +1,312 @@
+{
+  "results": {
+    "dinov2_448+clip_l14 | LR": {
+      "test": {
+        "acc": 0.9563,
+        "macro_f1": 0.9565,
+        "bal_acc": 0.9563
+      },
+      "test_dedup": {
+        "acc": 0.958,
+        "macro_f1": 0.9564,
+        "bal_acc": 0.9558
+      },
+      "deepweeds": {
+        "acc": 0.6318,
+        "macro_f1": 0.6307,
+        "bal_acc": 0.6339
+      }
+    },
+    "dinov2_448+clip_l14 | SVM": {
+      "test": {
+        "acc": 0.9656,
+        "macro_f1": 0.9658,
+        "bal_acc": 0.9656
+      },
+      "test_dedup": {
+        "acc": 0.9685,
+        "macro_f1": 0.9676,
+        "bal_acc": 0.9665
+      },
+      "deepweeds": {
+        "acc": 0.648,
+        "macro_f1": 0.6457,
+        "bal_acc": 0.6501
+      }
+    },
+    "dinov2_448+clip_l14 | Stack": {
+      "test": {
+        "acc": 0.9516,
+        "macro_f1": 0.9513,
+        "bal_acc": 0.9516
+      },
+      "test_dedup": {
+        "acc": 0.9527,
+        "macro_f1": 0.9499,
+        "bal_acc": 0.9499
+      },
+      "deepweeds": {
+        "acc": 0.5919,
+        "macro_f1": 0.5969,
+        "bal_acc": 0.5942
+      }
+    },
+    "dinov2_448+clip_l14 | PCA-256 LR": {
+      "test": {
+        "acc": 0.9422,
+        "macro_f1": 0.9431,
+        "bal_acc": 0.9422
+      },
+      "test_dedup": {
+        "acc": 0.9422,
+        "macro_f1": 0.9408,
+        "bal_acc": 0.9392
+      },
+      "deepweeds": {
+        "acc": 0.6345,
+        "macro_f1": 0.6204,
+        "bal_acc": 0.6366
+      }
+    },
+    "dinov2_448+clip_l14 | PCA-256 SVM": {
+      "test": {
+        "acc": 0.9422,
+        "macro_f1": 0.9427,
+        "bal_acc": 0.9422
+      },
+      "test_dedup": {
+        "acc": 0.9422,
+        "macro_f1": 0.9407,
+        "bal_acc": 0.9402
+      },
+      "deepweeds": {
+        "acc": 0.586,
+        "macro_f1": 0.5622,
+        "bal_acc": 0.5882
+      }
+    },
+    "dinov2_448+clip_l14 | PCA-256 Stack": {
+      "test": {
+        "acc": 0.9469,
+        "macro_f1": 0.9469,
+        "bal_acc": 0.9469
+      },
+      "test_dedup": {
+        "acc": 0.9475,
+        "macro_f1": 0.9449,
+        "bal_acc": 0.9435
+      },
+      "deepweeds": {
+        "acc": 0.5969,
+        "macro_f1": 0.6029,
+        "bal_acc": 0.5994
+      }
+    },
+    "dinov2_448+clip_l14+regnet_y | LR": {
+      "test": {
+        "acc": 0.8938,
+        "macro_f1": 0.8929,
+        "bal_acc": 0.8938
+      },
+      "test_dedup": {
+        "acc": 0.8879,
+        "macro_f1": 0.8835,
+        "bal_acc": 0.8846
+      },
+      "deepweeds": {
+        "acc": 0.4585,
+        "macro_f1": 0.4558,
+        "bal_acc": 0.4613
+      }
+    },
+    "dinov2_448+clip_l14+regnet_y | SVM": {
+      "test": {
+        "acc": 0.8906,
+        "macro_f1": 0.8897,
+        "bal_acc": 0.8906
+      },
+      "test_dedup": {
+        "acc": 0.8844,
+        "macro_f1": 0.8805,
+        "bal_acc": 0.8811
+      },
+      "deepweeds": {
+        "acc": 0.4683,
+        "macro_f1": 0.4683,
+        "bal_acc": 0.4707
+      }
+    },
+    "dinov2_448+clip_l14+regnet_y | Stack": {
+      "test": {
+        "acc": 0.9203,
+        "macro_f1": 0.9197,
+        "bal_acc": 0.9203
+      },
+      "test_dedup": {
+        "acc": 0.9177,
+        "macro_f1": 0.9149,
+        "bal_acc": 0.9158
+      },
+      "deepweeds": {
+        "acc": 0.5124,
+        "macro_f1": 0.51,
+        "bal_acc": 0.5158
+      }
+    },
+    "dinov2_448+clip_l14+regnet_y | PCA-256 LR": {
+      "test": {
+        "acc": 0.9359,
+        "macro_f1": 0.9363,
+        "bal_acc": 0.9359
+      },
+      "test_dedup": {
+        "acc": 0.9352,
+        "macro_f1": 0.9331,
+        "bal_acc": 0.9323
+      },
+      "deepweeds": {
+        "acc": 0.6142,
+        "macro_f1": 0.6187,
+        "bal_acc": 0.6161
+      }
+    },
+    "dinov2_448+clip_l14+regnet_y | PCA-256 SVM": {
+      "test": {
+        "acc": 0.9391,
+        "macro_f1": 0.9391,
+        "bal_acc": 0.9391
+      },
+      "test_dedup": {
+        "acc": 0.9387,
+        "macro_f1": 0.937,
+        "bal_acc": 0.9358
+      },
+      "deepweeds": {
+        "acc": 0.5022,
+        "macro_f1": 0.4838,
+        "bal_acc": 0.5057
+      }
+    },
+    "dinov2_448+clip_l14+regnet_y | PCA-256 Stack": {
+      "test": {
+        "acc": 0.9187,
+        "macro_f1": 0.9179,
+        "bal_acc": 0.9187
+      },
+      "test_dedup": {
+        "acc": 0.9159,
+        "macro_f1": 0.9127,
+        "bal_acc": 0.9138
+      },
+      "deepweeds": {
+        "acc": 0.5191,
+        "macro_f1": 0.5167,
+        "bal_acc": 0.5224
+      }
+    },
+    "dinov2_448+regnet_y | LR": {
+      "test": {
+        "acc": 0.8875,
+        "macro_f1": 0.8866,
+        "bal_acc": 0.8875
+      },
+      "test_dedup": {
+        "acc": 0.8809,
+        "macro_f1": 0.8769,
+        "bal_acc": 0.8788
+      },
+      "deepweeds": {
+        "acc": 0.4554,
+        "macro_f1": 0.4502,
+        "bal_acc": 0.4584
+      }
+    },
+    "dinov2_448+regnet_y | SVM": {
+      "test": {
+        "acc": 0.8875,
+        "macro_f1": 0.8867,
+        "bal_acc": 0.8875
+      },
+      "test_dedup": {
+        "acc": 0.8809,
+        "macro_f1": 0.8773,
+        "bal_acc": 0.8784
+      },
+      "deepweeds": {
+        "acc": 0.4647,
+        "macro_f1": 0.463,
+        "bal_acc": 0.4671
+      }
+    },
+    "dinov2_448+regnet_y | Stack": {
+      "test": {
+        "acc": 0.9047,
+        "macro_f1": 0.9039,
+        "bal_acc": 0.9047
+      },
+      "test_dedup": {
+        "acc": 0.9002,
+        "macro_f1": 0.8967,
+        "bal_acc": 0.8981
+      },
+      "deepweeds": {
+        "acc": 0.4952,
+        "macro_f1": 0.4886,
+        "bal_acc": 0.4988
+      }
+    },
+    "dinov2_448+regnet_y | PCA-256 LR": {
+      "test": {
+        "acc": 0.9328,
+        "macro_f1": 0.9333,
+        "bal_acc": 0.9328
+      },
+      "test_dedup": {
+        "acc": 0.9317,
+        "macro_f1": 0.9304,
+        "bal_acc": 0.9296
+      },
+      "deepweeds": {
+        "acc": 0.6065,
+        "macro_f1": 0.6109,
+        "bal_acc": 0.6083
+      }
+    },
+    "dinov2_448+regnet_y | PCA-256 SVM": {
+      "test": {
+        "acc": 0.9344,
+        "macro_f1": 0.9345,
+        "bal_acc": 0.9344
+      },
+      "test_dedup": {
+        "acc": 0.9335,
+        "macro_f1": 0.9314,
+        "bal_acc": 0.9305
+      },
+      "deepweeds": {
+        "acc": 0.5436,
+        "macro_f1": 0.529,
+        "bal_acc": 0.5483
+      }
+    },
+    "dinov2_448+regnet_y | PCA-256 Stack": {
+      "test": {
+        "acc": 0.9078,
+        "macro_f1": 0.9066,
+        "bal_acc": 0.9078
+      },
+      "test_dedup": {
+        "acc": 0.9037,
+        "macro_f1": 0.8998,
+        "bal_acc": 0.9018
+      },
+      "deepweeds": {
+        "acc": 0.4967,
+        "macro_f1": 0.4885,
+        "bal_acc": 0.5003
+      }
+    }
+  },
+  "pca_dims": 256,
+  "seconds": 103.4
+}
