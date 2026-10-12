@@ -1,0 +1,147 @@
+{
+  "A_source_only": {
+    "LR": {
+      "best_params": {
+        "logisticregression__C": 0.01
+      },
+      "cv_acc": 0.9,
+      "in_domain": {
+        "acc": 0.9156,
+        "macro_f1": 0.9156,
+        "bal_acc": 0.9156
+      },
+      "shift": {
+        "acc": 0.4462,
+        "macro_f1": 0.4365,
+        "bal_acc": 0.4471
+      }
+    },
+    "SVM-linear": {
+      "best_params": {
+        "svc__C": 0.01
+      },
+      "cv_acc": 0.9,
+      "in_domain": {
+        "acc": 0.9141,
+        "macro_f1": 0.9138,
+        "bal_acc": 0.9141
+      },
+      "shift": {
+        "acc": 0.4304,
+        "macro_f1": 0.4041,
+        "bal_acc": 0.4313
+      }
+    },
+    "SVM-RBF": {
+      "best_params": {
+        "svc__C": 10
+      },
+      "cv_acc": 0.9109,
+      "in_domain": {
+        "acc": 0.9172,
+        "macro_f1": 0.917,
+        "bal_acc": 0.9172
+      },
+      "shift": {
+        "acc": 0.4442,
+        "macro_f1": 0.42,
+        "bal_acc": 0.4443
+      }
+    },
+    "kNN-cosine": {
+      "best_params": {
+        "kneighborsclassifier__n_neighbors": 10
+      },
+      "cv_acc": 0.8583,
+      "in_domain": {
+        "acc": 0.8984,
+        "macro_f1": 0.8982,
+        "bal_acc": 0.8984
+      },
+      "shift": {
+        "acc": 0.4032,
+        "macro_f1": 0.3863,
+        "bal_acc": 0.4032
+      }
+    },
+    "MLP": {
+      "best_params": {
+        "mlpclassifier__alpha": 1.0
+      },
+      "cv_acc": 0.9021,
+      "in_domain": {
+        "acc": 0.9141,
+        "macro_f1": 0.9136,
+        "bal_acc": 0.9141
+      },
+      "shift": {
+        "acc": 0.4506,
+        "macro_f1": 0.4437,
+        "bal_acc": 0.4508
+      }
+    },
+    "Prototype": {
+      "best_params": {},
+      "cv_acc": null,
+      "in_domain": {
+        "acc": 0.7734,
+        "macro_f1": 0.7734,
+        "bal_acc": 0.7734
+      },
+      "shift": {
+        "acc": 0.3487,
+        "macro_f1": 0.327,
+        "bal_acc": 0.3459
+      }
+    },
+    "Ensemble": {
+      "best_params": {
+        "members": [
+          "LR",
+          "MLP",
+          "kNN-cosine",
+          "Prototype"
+        ]
+      },
+      "cv_acc": null,
+      "in_domain": {
+        "acc": 0.9156,
+        "macro_f1": 0.9152,
+        "bal_acc": 0.9156
+      },
+      "shift": {
+        "acc": 0.456,
+        "macro_f1": 0.4429,
+        "bal_acc": 0.4566
+      }
+    }
+  },
+  "B_shift_aware": {
+    "LR (tuned, source-only)": {
+      "acc": 0.4462,
+      "macro_f1": 0.4365,
+      "bal_acc": 0.4471
+    },
+    "+ target re-standardisation": {
+      "acc": 0.5059,
+      "macro_f1": 0.4916,
+      "bal_acc": 0.5058
+    },
+    "+ prior alignment (Sinkhorn)": {
+      "acc": 0.5143,
+      "macro_f1": 0.5109,
+      "bal_acc": 0.5146
+    },
+    "+ class-balanced self-training": {
+      "acc": 0.5201,
+      "macro_f1": 0.5101,
+      "bal_acc": 0.5211
+    },
+    "+ all three": {
+      "acc": 0.6304,
+      "macro_f1": 0.6309,
+      "bal_acc": 0.6305
+    }
+  },
+  "seconds": 13.2
+}
