@@ -1,0 +1,163 @@
+{
+  "results": {
+    "dinov2_448 | SVM": {
+      "test": {
+        "acc": 0.9563,
+        "macro_f1": 0.9567,
+        "bal_acc": 0.9563
+      },
+      "test_dedup": {
+        "acc": 0.958,
+        "macro_f1": 0.9568,
+        "bal_acc": 0.9559
+      },
+      "deepweeds": {
+        "acc": 0.6485,
+        "macro_f1": 0.649,
+        "bal_acc": 0.6514
+      }
+    },
+    "dinov2_448_tta | LR": {
+      "test": {
+        "acc": 0.9469,
+        "macro_f1": 0.9478,
+        "bal_acc": 0.9469
+      },
+      "test_dedup": {
+        "acc": 0.9475,
+        "macro_f1": 0.9462,
+        "bal_acc": 0.9448
+      }
+    },
+    "dinov2_448_tta | SVM": {
+      "test": {
+        "acc": 0.9531,
+        "macro_f1": 0.9535,
+        "bal_acc": 0.9531
+      },
+      "test_dedup": {
+        "acc": 0.9545,
+        "macro_f1": 0.9529,
+        "bal_acc": 0.9517
+      }
+    },
+    "clip_l14 | SVM": {
+      "test": {
+        "acc": 0.9172,
+        "macro_f1": 0.917,
+        "bal_acc": 0.9172
+      },
+      "test_dedup": {
+        "acc": 0.9142,
+        "macro_f1": 0.9119,
+        "bal_acc": 0.9099
+      },
+      "deepweeds": {
+        "acc": 0.4442,
+        "macro_f1": 0.42,
+        "bal_acc": 0.4443
+      }
+    },
+    "clip_l14_tta | LR": {
+      "test": {
+        "acc": 0.9187,
+        "macro_f1": 0.9195,
+        "bal_acc": 0.9188
+      },
+      "test_dedup": {
+        "acc": 0.9159,
+        "macro_f1": 0.9141,
+        "bal_acc": 0.9118
+      }
+    },
+    "clip_l14_tta | SVM": {
+      "test": {
+        "acc": 0.9297,
+        "macro_f1": 0.9295,
+        "bal_acc": 0.9297
+      },
+      "test_dedup": {
+        "acc": 0.9282,
+        "macro_f1": 0.9266,
+        "bal_acc": 0.9252
+      }
+    },
+    "dinov2_448+clip_l14 | SVM": {
+      "test": {
+        "acc": 0.9656,
+        "macro_f1": 0.9658,
+        "bal_acc": 0.9656
+      },
+      "test_dedup": {
+        "acc": 0.9685,
+        "macro_f1": 0.9676,
+        "bal_acc": 0.9665
+      },
+      "deepweeds": {
+        "acc": 0.648,
+        "macro_f1": 0.6457,
+        "bal_acc": 0.6501
+      }
+    },
+    "dinov2_448+clip_l14 | Stack": {
+      "test": {
+        "acc": 0.9516,
+        "macro_f1": 0.9513,
+        "bal_acc": 0.9516
+      },
+      "test_dedup": {
+        "acc": 0.9527,
+        "macro_f1": 0.9499,
+        "bal_acc": 0.9499
+      },
+      "deepweeds": {
+        "acc": 0.5919,
+        "macro_f1": 0.5969,
+        "bal_acc": 0.5942
+      }
+    },
+    "dinov2_448_tta+clip_l14_tta | LR": {
+      "test": {
+        "acc": 0.9594,
+        "macro_f1": 0.9595,
+        "bal_acc": 0.9594
+      },
+      "test_dedup": {
+        "acc": 0.9615,
+        "macro_f1": 0.9601,
+        "bal_acc": 0.9594
+      }
+    },
+    "dinov2_448_tta+clip_l14_tta | SVM": {
+      "test": {
+        "acc": 0.9578,
+        "macro_f1": 0.9581,
+        "bal_acc": 0.9578
+      },
+      "test_dedup": {
+        "acc": 0.9597,
+        "macro_f1": 0.9586,
+        "bal_acc": 0.9575
+      }
+    },
+    "dinov2_448_tta+clip_l14_tta | Stack": {
+      "test": {
+        "acc": 0.9516,
+        "macro_f1": 0.9514,
+        "bal_acc": 0.9516
+      },
+      "test_dedup": {
+        "acc": 0.9527,
+        "macro_f1": 0.9508,
+        "bal_acc": 0.9495
+      }
+    }
+  },
+  "views": [
+    "orig",
+    "hflip",
+    "zoom",
+    "zoom_hflip"
+  ],
+  "seconds": 2451.0
+}
