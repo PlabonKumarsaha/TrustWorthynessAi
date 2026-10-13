@@ -21,9 +21,11 @@ NUM = len(CLASSES)
 DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 MEAN, STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
 GBIF_DIR, DW_DIR = "weeds/global_raw", "weeds/dw8"
-# HD_DIRECTION=gbif2dw (default) trains on GBIF and shift-tests on DeepWeeds; dw2gbif is the reverse.
+GBIF_LARGE_DIR = "weeds/global_900"   # balanced ~900/class re-download (gbif_download.py)
+# HD_DIRECTION=gbif2dw (default) trains on GBIF and shift-tests on DeepWeeds; dw2gbif is the reverse;
+# gbif900_2dw is the forward run on the larger GBIF set.
 DIRECTION = os.environ.get("HD_DIRECTION", "gbif2dw")
-OUT = {"gbif2dw": "results_hd", "dw2gbif": "results_hd_rev"}[DIRECTION]
+OUT = {"gbif2dw": "results_hd", "dw2gbif": "results_hd_rev", "gbif900_2dw": "results_hd_900"}[DIRECTION]
 
 # cheapest first, so partial results arrive early
 BACKBONES = ["mobilenet_v2", "resnet50", "densenet201", "vgg16", "vgg19", "regnet_y_32gf"]
@@ -88,6 +90,8 @@ def splits():
     """(train, val, in-domain test, shift test, in-domain name, shift name) for DIRECTION."""
     if DIRECTION == "gbif2dw":
         tr, va, te = gbif_splits();      return tr, va, te, deepweeds_all(), "GBIF", "DeepWeeds"
+    if DIRECTION == "gbif900_2dw":
+        tr, va, te = _stratified(GBIF_LARGE_DIR); return tr, va, te, deepweeds_all(), "GBIF-900", "DeepWeeds"
     tr, va, te = deepweeds_splits();     return tr, va, te, gbif_all(),      "DeepWeeds", "GBIF"
 
 def build(name, p_drop=0.5):

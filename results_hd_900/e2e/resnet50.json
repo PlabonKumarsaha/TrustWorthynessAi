@@ -1,0 +1,31 @@
+{
+  "backbone": "resnet50",
+  "direction": "gbif900_2dw",
+  "best_epoch": 7,
+  "best_val_loss": 0.2313,
+  "feat_dim": 2048,
+  "in_domain_name": "GBIF-900",
+  "shift_name": "DeepWeeds",
+  "in_domain": {
+    "acc": 0.9103,
+    "macro_f1": 0.9101,
+    "bal_acc": 0.9103
+  },
+  "shift": {
+    "acc": 0.2668,
+    "macro_f1": 0.265,
+    "bal_acc": 0.2678
+  },
+  "seconds": 1144.5,
+  "classes": [
+    "chinee_apple",
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "prickly_acacia",
+    "rubber_vine",
+    "siam_weed",
+    "snake_weed"
+  ],
+  "gap_acc": 0.6435
+}
