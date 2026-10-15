@@ -1,0 +1,158 @@
+{
+  "SVM": {
+    "in_domain": {
+      "acc": 0.981,
+      "macro_f1": 0.9811,
+      "bal_acc": 0.9812
+    },
+    "shift": {
+      "acc": 0.2342,
+      "macro_f1": 0.2345,
+      "bal_acc": 0.2342
+    },
+    "seconds": 3.8
+  },
+  "LR": {
+    "in_domain": {
+      "acc": 0.9775,
+      "macro_f1": 0.9776,
+      "bal_acc": 0.9776
+    },
+    "shift": {
+      "acc": 0.2142,
+      "macro_f1": 0.2101,
+      "bal_acc": 0.2142
+    },
+    "seconds": 0.4
+  },
+  "HGB": {
+    "in_domain": {
+      "acc": 0.9763,
+      "macro_f1": 0.9764,
+      "bal_acc": 0.9765
+    },
+    "shift": {
+      "acc": 0.2055,
+      "macro_f1": 0.1966,
+      "bal_acc": 0.2055
+    },
+    "seconds": 50.5
+  },
+  "kNN": {
+    "in_domain": {
+      "acc": 0.9816,
+      "macro_f1": 0.9817,
+      "bal_acc": 0.9818
+    },
+    "shift": {
+      "acc": 0.2392,
+      "macro_f1": 0.2331,
+      "bal_acc": 0.2392
+    },
+    "seconds": 1.9
+  },
+  "RF": {
+    "in_domain": {
+      "acc": 0.9798,
+      "macro_f1": 0.9799,
+      "bal_acc": 0.98
+    },
+    "shift": {
+      "acc": 0.223,
+      "macro_f1": 0.2304,
+      "bal_acc": 0.223
+    },
+    "seconds": 1.4
+  },
+  "XGBoost": {
+    "in_domain": {
+      "acc": 0.9745,
+      "macro_f1": 0.9746,
+      "bal_acc": 0.9748
+    },
+    "shift": {
+      "acc": 0.2132,
+      "macro_f1": 0.2049,
+      "bal_acc": 0.2132
+    },
+    "seconds": 21.8
+  },
+  "LDA": {
+    "in_domain": {
+      "acc": 0.9816,
+      "macro_f1": 0.9818,
+      "bal_acc": 0.9818
+    },
+    "shift": {
+      "acc": 0.245,
+      "macro_f1": 0.2402,
+      "bal_acc": 0.245
+    },
+    "seconds": 29.1
+  },
+  "Bagging": {
+    "in_domain": {
+      "acc": 0.9733,
+      "macro_f1": 0.9736,
+      "bal_acc": 0.9736
+    },
+    "shift": {
+      "acc": 0.2344,
+      "macro_f1": 0.2406,
+      "bal_acc": 0.2344
+    },
+    "seconds": 11.7
+  },
+  "GradBoost": {
+    "in_domain": {
+      "acc": 0.9763,
+      "macro_f1": 0.9764,
+      "bal_acc": 0.9764
+    },
+    "shift": {
+      "acc": 0.2325,
+      "macro_f1": 0.2031,
+      "bal_acc": 0.2325
+    },
+    "seconds": 2900.3
+  },
+  "AdaBoost": {
+    "in_domain": {
+      "acc": 0.9146,
+      "macro_f1": 0.9188,
+      "bal_acc": 0.9151
+    },
+    "shift": {
+      "acc": 0.1703,
+      "macro_f1": 0.1138,
+      "bal_acc": 0.1703
+    },
+    "seconds": 72.7
+  },
+  "DT": {
+    "in_domain": {
+      "acc": 0.9419,
+      "macro_f1": 0.9422,
+      "bal_acc": 0.9428
+    },
+    "shift": {
+      "acc": 0.2161,
+      "macro_f1": 0.1997,
+      "bal_acc": 0.2161
+    },
+    "seconds": 6.3
+  },
+  "NB": {
+    "in_domain": {
+      "acc": 0.9787,
+      "macro_f1": 0.9788,
+      "bal_acc": 0.9787
+    },
+    "shift": {
+      "acc": 0.2138,
+      "macro_f1": 0.2139,
+      "bal_acc": 0.2138
+    },
+    "seconds": 0.8
+  }
+}

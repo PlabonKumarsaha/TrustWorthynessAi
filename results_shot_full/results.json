@@ -1,0 +1,203 @@
+{
+  "results": {
+    "original": {
+      "n_source": 2240,
+      "per_class": [
+        280,
+        280,
+        280,
+        280,
+        280,
+        280,
+        280,
+        280
+      ],
+      "linear_probe": {
+        "acc": 0.645,
+        "macro_f1": 0.6493,
+        "bal_acc": 0.6473
+      },
+      "runs": [
+        {
+          "seed": 0,
+          "source_only": {
+            "acc": 0.6686,
+            "macro_f1": 0.6713,
+            "bal_acc": 0.6709
+          },
+          "shot": {
+            "acc": 0.8303,
+            "macro_f1": 0.8345,
+            "bal_acc": 0.8311
+          }
+        },
+        {
+          "seed": 1,
+          "source_only": {
+            "acc": 0.6631,
+            "macro_f1": 0.6617,
+            "bal_acc": 0.6657
+          },
+          "shot": {
+            "acc": 0.8457,
+            "macro_f1": 0.8493,
+            "bal_acc": 0.8463
+          }
+        },
+        {
+          "seed": 2,
+          "source_only": {
+            "acc": 0.6514,
+            "macro_f1": 0.6472,
+            "bal_acc": 0.6544
+          },
+          "shot": {
+            "acc": 0.8322,
+            "macro_f1": 0.8358,
+            "bal_acc": 0.8328
+          }
+        }
+      ],
+      "source_only_mean": 0.6610333333333334,
+      "source_only_std": 0.007172323348972928,
+      "shot_mean": 0.8360666666666668,
+      "shot_std": 0.006855816670698101,
+      "shot_f1_mean": 0.8398666666666667
+    },
+    "gbif400": {
+      "n_source": 3200,
+      "per_class": [
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400,
+        400
+      ],
+      "linear_probe": {
+        "acc": 0.6256,
+        "macro_f1": 0.6223,
+        "bal_acc": 0.6289
+      },
+      "runs": [
+        {
+          "seed": 0,
+          "source_only": {
+            "acc": 0.6662,
+            "macro_f1": 0.6597,
+            "bal_acc": 0.6691
+          },
+          "shot": {
+            "acc": 0.8327,
+            "macro_f1": 0.8359,
+            "bal_acc": 0.8339
+          }
+        },
+        {
+          "seed": 1,
+          "source_only": {
+            "acc": 0.66,
+            "macro_f1": 0.6532,
+            "bal_acc": 0.6633
+          },
+          "shot": {
+            "acc": 0.8308,
+            "macro_f1": 0.835,
+            "bal_acc": 0.8316
+          }
+        },
+        {
+          "seed": 2,
+          "source_only": {
+            "acc": 0.6496,
+            "macro_f1": 0.6376,
+            "bal_acc": 0.6531
+          },
+          "shot": {
+            "acc": 0.8393,
+            "macro_f1": 0.8421,
+            "bal_acc": 0.8399
+          }
+        }
+      ],
+      "source_only_mean": 0.6586,
+      "source_only_std": 0.006848844184726868,
+      "shot_mean": 0.8342666666666667,
+      "shot_std": 0.003642648609032868,
+      "shot_f1_mean": 0.8376666666666667
+    },
+    "combined": {
+      "n_source": 8133,
+      "per_class": [
+        923,
+        1049,
+        1049,
+        1049,
+        1049,
+        916,
+        1049,
+        1049
+      ],
+      "linear_probe": {
+        "acc": 0.7069,
+        "macro_f1": 0.7158,
+        "bal_acc": 0.7088
+      },
+      "runs": [
+        {
+          "seed": 0,
+          "source_only": {
+            "acc": 0.709,
+            "macro_f1": 0.7173,
+            "bal_acc": 0.7104
+          },
+          "shot": {
+            "acc": 0.8762,
+            "macro_f1": 0.8778,
+            "bal_acc": 0.876
+          }
+        },
+        {
+          "seed": 1,
+          "source_only": {
+            "acc": 0.7382,
+            "macro_f1": 0.7473,
+            "bal_acc": 0.7397
+          },
+          "shot": {
+            "acc": 0.8412,
+            "macro_f1": 0.8501,
+            "bal_acc": 0.8406
+          }
+        },
+        {
+          "seed": 2,
+          "source_only": {
+            "acc": 0.6976,
+            "macro_f1": 0.7044,
+            "bal_acc": 0.6993
+          },
+          "shot": {
+            "acc": 0.8473,
+            "macro_f1": 0.8487,
+            "bal_acc": 0.847
+          }
+        }
+      ],
+      "source_only_mean": 0.7149333333333333,
+      "source_only_std": 0.01709762816559328,
+      "shot_mean": 0.8549000000000001,
+      "shot_std": 0.015265866063432712,
+      "shot_f1_mean": 0.8588666666666667
+    }
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "n_target": 8403,
+  "seconds": 613.3
+}

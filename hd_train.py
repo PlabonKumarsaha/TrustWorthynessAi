@@ -55,6 +55,7 @@ def run(name):
             bad += 1
             if bad >= PATIENCE: print(f"  [{name}] early stop (best epoch {best_ep})", flush=True); break
     model.load_state_dict(best_state)
+    os.makedirs("models_cache", exist_ok=True); torch.save(best_state, f"models_cache/hd_{DIRECTION}_{name}.pt")
 
     X, L = {}, {}
     for split, files in [("tr", ftr), ("va", fva), ("te", fte), ("sh", fsh)]:
