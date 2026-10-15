@@ -1,0 +1,31 @@
+{
+  "backbone": "mobilenet_v2",
+  "direction": "dw2gbif649",
+  "best_epoch": 22,
+  "best_val_loss": 0.1316,
+  "feat_dim": 1280,
+  "in_domain_name": "DeepWeeds",
+  "shift_name": "GBIF-649",
+  "in_domain": {
+    "acc": 0.9591,
+    "macro_f1": 0.959,
+    "bal_acc": 0.9592
+  },
+  "shift": {
+    "acc": 0.1959,
+    "macro_f1": 0.155,
+    "bal_acc": 0.1959
+  },
+  "seconds": 1502.4,
+  "classes": [
+    "chinee_apple",
+    "lantana",
+    "parkinsonia",
+    "parthenium",
+    "prickly_acacia",
+    "rubber_vine",
+    "siam_weed",
+    "snake_weed"
+  ],
+  "gap_acc": 0.7632
+}

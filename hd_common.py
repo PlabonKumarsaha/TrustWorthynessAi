@@ -22,10 +22,13 @@ DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 MEAN, STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
 GBIF_DIR, DW_DIR = "weeds/global_raw", "weeds/dw8"
 GBIF_LARGE_DIR = "weeds/global_900"   # balanced ~900/class re-download (gbif_download.py)
+GBIF_LIVING_DIR = "weeds/gbif_living" # balanced, living-plant photos only (gbif_living_download.py)
 # HD_DIRECTION=gbif2dw (default) trains on GBIF and shift-tests on DeepWeeds; dw2gbif is the reverse;
-# gbif900_2dw is the forward run on the larger GBIF set.
+# gbif900_2dw is the forward run on the larger GBIF set; dw2gbif649 is the reverse with GBIF-649 as
+# the shift test; living2dw trains on the living-plant-only GBIF set.
 DIRECTION = os.environ.get("HD_DIRECTION", "gbif2dw")
-OUT = {"gbif2dw": "results_hd", "dw2gbif": "results_hd_rev", "gbif900_2dw": "results_hd_900"}[DIRECTION]
+OUT = {"gbif2dw": "results_hd", "dw2gbif": "results_hd_rev", "gbif900_2dw": "results_hd_900",
+       "dw2gbif649": "results_hd_rev649", "living2dw": "results_hd_living"}[DIRECTION]
 
 # cheapest first, so partial results arrive early
 BACKBONES = ["mobilenet_v2", "resnet50", "densenet201", "vgg16", "vgg19", "regnet_y_32gf"]
@@ -92,7 +95,11 @@ def splits():
         tr, va, te = gbif_splits();      return tr, va, te, deepweeds_all(), "GBIF", "DeepWeeds"
     if DIRECTION == "gbif900_2dw":
         tr, va, te = _stratified(GBIF_LARGE_DIR); return tr, va, te, deepweeds_all(), "GBIF-900", "DeepWeeds"
-    tr, va, te = deepweeds_splits();     return tr, va, te, gbif_all(),      "DeepWeeds", "GBIF"
+    if DIRECTION == "living2dw":
+        tr, va, te = _stratified(GBIF_LIVING_DIR); return tr, va, te, deepweeds_all(), "GBIF-Living", "DeepWeeds"
+    tr, va, te = deepweeds_splits()
+    if DIRECTION == "dw2gbif649":       return tr, va, te, list_dir(GBIF_LARGE_DIR), "DeepWeeds", "GBIF-649"
+    return tr, va, te, gbif_all(), "DeepWeeds", "GBIF"
 
 def build(name, p_drop=0.5):
     """ImageNet backbone with its final layer replaced by the paper's head: dropout -> dense(8).

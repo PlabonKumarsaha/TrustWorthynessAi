@@ -5,6 +5,10 @@ and DeepWeeds (shift). Heads are fit on the GBIF training split only.
 
 All heads use scikit-learn/XGBoost defaults (the paper reports no tuning) behind a
 StandardScaler. Resumable per backbone.
+
+HD_EXTRA_SHIFT=<dir> also scores each fitted head on <dir>/feats/<backbone>.npz (Xsh, ysh: another
+shift-test set extracted by hd_retest_shift.py --extract-only) and writes <dir>/heads/, so the heads
+are fit once for both shift sets.
 """
 import os, json, time, warnings
 import numpy as np
@@ -21,6 +25,7 @@ from sklearn.naive_bayes import GaussianNB
 from xgboost import XGBClassifier
 
 from hd_common import BACKBONES, OUT, metrics
+EXTRA = os.environ.get("HD_EXTRA_SHIFT")
 
 warnings.filterwarnings("ignore")
 SEED = 42
@@ -48,18 +53,26 @@ def run(name):
     sh_key = "Xsh" if "Xsh" in d else "Xdw"        # older forward-direction caches used Xdw
     Xtr, Xte, Xsh = (d[k].astype(np.float32) for k in ("Xtr", "Xte", sh_key))
     ytr, yte, ysh = d["ytr"], d["yte"], d["ysh" if "ysh" in d else "ydw"]
-    res = {}
+    ex = np.load(f"{EXTRA}/feats/{name}.npz") if EXTRA and os.path.exists(f"{EXTRA}/feats/{name}.npz") else None
+    res, res_ex = {}, {}
     for hn, mk in HEADS.items():
         t0 = time.time()
         clf = make_pipeline(StandardScaler(), mk()).fit(Xtr, ytr)
         res[hn] = dict(in_domain=metrics(yte, clf.predict(Xte)),
                        shift=metrics(ysh, clf.predict(Xsh)),
                        seconds=round(time.time() - t0, 1))
+        if ex is not None:
+            res_ex[hn] = dict(in_domain=res[hn]["in_domain"],
+                              shift=metrics(ex["ysh"], clf.predict(ex["Xsh"].astype(np.float32))))
         print(f"  [{name}] {hn:9s} in-domain={res[hn]['in_domain']['acc']:.4f}  "
               f"shift={res[hn]['shift']['acc']:.4f}  ({res[hn]['seconds']}s)", flush=True)
     os.makedirs(f"{OUT}/heads", exist_ok=True)
     json.dump(res, open(out_path, "w"), indent=2)
+    if ex is not None:
+        os.makedirs(f"{EXTRA}/heads", exist_ok=True)
+        json.dump(res_ex, open(f"{EXTRA}/heads/{name}.json", "w"), indent=2)
 
 if __name__ == "__main__":
-    for nm in BACKBONES:
+    import sys
+    for nm in (sys.argv[1].split(",") if len(sys.argv) > 1 else BACKBONES):
         run(nm)
